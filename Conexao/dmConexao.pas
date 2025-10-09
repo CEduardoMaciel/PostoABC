@@ -33,6 +33,8 @@ type
     cdsTanquesBomba: TClientDataSet;
     cdsTanquesBombaCODIGO_TANQUE: TIntegerField;
     cdsTanquesBombaDESCRICAO: TStringField;
+    sqAuxiliar: TSQLQuery;
+    dspAuxiliar: TDataSetProvider;
   private
     { Private declarations }
   public

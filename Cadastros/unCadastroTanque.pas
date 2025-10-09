@@ -30,10 +30,12 @@ type
     procedure Salvar(Sender: TObject);
     function Validar: Boolean;
     procedure Editar(Sender: TObject);
+    procedure Excluir(Sender: TObject);
   private
     { Private declarations }
     FEstado: TEstadosDaRotina;
     procedure AlterarEstadoDosControles;
+    procedure LimparCampos;
   public
     { Public declarations }
 
@@ -55,7 +57,7 @@ var
   Tanque: TTanque;
   CodigoTanque: Integer;
 begin
-  if Key = #13 then
+  if (Key = #13) and (edCodigoTanque.Text <> EmptyStr) then
   begin
     CodigoTanque := StrToInt(Trim(edCodigoTanque.Text));
     if CodigoTanque <> 0 then
@@ -74,19 +76,18 @@ begin
           FEstado := erAlteracao
         else
           FEstado := erCarregado;  
-        AlterarEstadoDosControles;  
       end
       else
       begin
         if Pergunta('Deseja incluir um novo Tanque?') then
         begin
           FEstado := erInclusao;
-          AlterarEstadoDosControles;
           edDescricaoTanque.SetFocus;
         end;
       end;
     end;
   end;
+  AlterarEstadoDosControles;
 end;
 
 procedure TfmCadastroTanque.btCancelarClick(Sender: TObject);
@@ -100,6 +101,47 @@ procedure TfmCadastroTanque.Editar(Sender: TObject);
 begin
   FEstado := erAlteracao;
   AlterarEstadoDosControles;
+end;
+
+procedure TfmCadastroTanque.Excluir(Sender: TObject);
+var
+  Tanque: TTanque;
+  CodigoTanque: Integer;
+begin
+  if Pergunta('Deseja realmente excluir o Tanque?') then
+  begin
+    CodigoTanque := StrToIntDef(edCodigoTanque.Text, 0);
+    Tanque := TTanque.Create;
+    try
+      Tanque.Codigo := CodigoTanque;
+      if Controller.ExisteBombaVinculadaAEsseTanque(CodigoTanque) then
+      begin
+        Mensagem('Existe uma ou mais bombas vinculadas a esse Tanque');
+        FEstado := erCarregado;
+      end
+      else
+      begin
+        if Controller.ExcluirTanque(Tanque) then
+        begin
+          Mensagem('Tanque excluído com sucesso');
+          LimparCampos;
+          FEstado := erNone;
+        end
+        else
+          Mensagem('Erro ao excluir o Tanque');
+      end;
+    finally
+      FreeAndNil(Tanque);
+    end;
+  end;
+  AlterarEstadoDosControles;
+end;
+
+procedure TfmCadastroTanque.LimparCampos;
+begin
+  edCodigoTanque.Clear;
+  edDescricaoTanque.Clear;
+  cbTipoCombustivel.ItemIndex := -1;
 end;
 
 procedure TfmCadastroTanque.AlterarEstadoDosControles;
@@ -122,6 +164,7 @@ procedure TfmCadastroTanque.FormActivate(Sender: TObject);
 begin
   edCodigoTanque.SetFocus;
   FEstado := erNone;
+  AlterarEstadoDosControles;
 end;
 
 procedure TfmCadastroTanque.FormCreate(Sender: TObject);
@@ -139,36 +182,39 @@ var
   Tanque: TTanque;
   Persistencia: TTanquePersitencia;
 begin
-  Tanque := TTanque.Create;
-  Persistencia := TTanquePersitencia.Create;
-  try
-    Tanque.Codigo := StrToIntDef(edCodigoTanque.Text, 0);
-    Tanque.Descricao := Trim(edDescricaoTanque.Text);
-    Tanque.TipoCombustivel := Copy(cbTipoCombustivel.Text, 1, 1);
-    if FEstado = erAlteracao then
-    begin
-      if Persistencia.Atualizar(Tanque) then
+  if Validar then
+  begin
+    Tanque := TTanque.Create;
+    Persistencia := TTanquePersitencia.Create;
+    try
+      Tanque.Codigo := StrToIntDef(edCodigoTanque.Text, 0);
+      Tanque.Descricao := Trim(edDescricaoTanque.Text);
+      Tanque.TipoCombustivel := Copy(cbTipoCombustivel.Text, 1, 1);
+      if FEstado = erAlteracao then
       begin
-        Mensagem('Tanque alterado com sucesso');
-        FEstado := erCarregado;
-      end;
-    end
-    else
-      if Persistencia.Salvar(Tanque) then
-      begin
-        Mensagem('Tanque inserido com sucesso!');
-        FEstado := erCarregado;
+        if Persistencia.Atualizar(Tanque) then
+        begin
+          Mensagem('Tanque alterado com sucesso');
+          FEstado := erCarregado;
+        end;
       end
       else
-      begin
-        Mensagem('Erro ao gravar o tanque.');
-        FEstado := erNone;
-      end;
+        if Persistencia.Salvar(Tanque) then
+        begin
+          Mensagem('Tanque inserido com sucesso!');
+          FEstado := erCarregado;
+        end
+        else
+        begin
+          Mensagem('Erro ao gravar o tanque.');
+          FEstado := erNone;
+        end;
 
-    AlterarEstadoDosControles;
-  finally
-    FreeAndNil(Persistencia);
-    FreeAndNil(Tanque);
+      AlterarEstadoDosControles;
+    finally
+      FreeAndNil(Persistencia);
+      FreeAndNil(Tanque);
+    end;
   end;
 end;
 

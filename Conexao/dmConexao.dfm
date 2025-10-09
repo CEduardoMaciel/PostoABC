@@ -181,4 +181,18 @@ object Conexao: TConexao
       Size = 50
     end
   end
+  object sqAuxiliar: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQL.Strings = (
+      'SELECT * FROM ABASTECIMENTO WHERE 1 = 0')
+    SQLConnection = FirebirdConnection
+    Left = 216
+    Top = 256
+  end
+  object dspAuxiliar: TDataSetProvider
+    DataSet = sqAuxiliar
+    Left = 216
+    Top = 304
+  end
 end

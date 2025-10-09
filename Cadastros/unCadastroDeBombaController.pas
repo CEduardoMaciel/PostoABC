@@ -3,13 +3,14 @@ unit unCadastroDeBombaController;
 interface
 
 uses
-  unEntidadeBomba, DBXpress, SqlExpr, SysUtils, dmConexao, DBCLient;
+  unEntidadeBomba, SqlExpr, SysUtils, dmConexao, DBCLient;
 
 type
   TCadastroBombaController = class
   public
     function BombaExiste(ACodigoBomba: Integer): TBomba;
-    function SalvarBomba(Bomba: TBomba): Boolean;
+    function QuantidadeDeBombasVinculadasAEsseTanqueEhPermitida(ACodigoTanque: Integer): Boolean;
+    function ExcluirBomba(Bomba: TBomba): Boolean;
     function CarregarTanques: TClientDataSet;
   end;
 
@@ -25,7 +26,7 @@ begin
   try
     Result := Persistencia.Buscar(ACodigoBomba);
   finally
-    Persistencia.Free;
+    FreeAndNil(Persistencia);
   end;
 end;
 
@@ -40,26 +41,29 @@ begin
   Result := Conexao.cdsTanquesBomba;
 end;
 
-function TCadastroBombaController.SalvarBomba(Bomba: TBomba): Boolean;
+function TCadastroBombaController.ExcluirBomba(Bomba: TBomba): Boolean;
 var
   Persistencia: TBombaPersitencia;
-  QuantidadeBombas: Integer;
 begin
-  Result := False;
   Persistencia := TBombaPersitencia.Create;
   try
-    QuantidadeBombas := Persistencia.QuantidadeBombasPorTanque(Bomba.CodigoTanque);
-
-    if (Bomba.Codigo = 0) and (QuantidadeBombas >= 2) then
-      raise Exception.Create('Esse tanque já está vinculado a 2 bombas.');
-
-    if Bomba.Codigo = 0 then
-      Result := Persistencia.Salvar(Bomba)
-    else
-      Result := Persistencia.Atualizar(Bomba);
+    Result := Persistencia.Excluir(Bomba);
   finally
-    Persistencia.Free;
+    FreeAndNil(Persistencia);
   end;
+end;
+
+function TCadastroBombaController.QuantidadeDeBombasVinculadasAEsseTanqueEhPermitida(
+  ACodigoTanque: Integer): Boolean;
+begin
+  if Conexao.sqAuxiliar.Active then
+    Conexao.sqAuxiliar.Close;
+
+  Conexao.sqAuxiliar.SQL.Text := 'SELECT COUNT(*) FROM BOMBA WHERE CODIGO_TANQUE = ' +
+    QuotedStr(IntToStr(ACodigoTanque));
+
+  Conexao.sqAuxiliar.Open;
+  Result := Conexao.sqAuxiliar.RecordCount < 2;
 end;
 
 end.

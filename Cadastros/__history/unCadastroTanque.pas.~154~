@@ -1,0 +1,248 @@
+unit unCadastroTanque;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, DBClient, dmConexao, StdCtrls, Mask, DBCtrls, unCadastroTanqueController,
+  unEntidadeTanque, StrUtils, ExtCtrls, unTipos;
+
+type
+  TfmCadastroTanque = class(TForm)
+    edCodigoTanque: TMaskEdit;
+    edDescricaoTanque: TEdit;
+    cbTipoCombustivel: TComboBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    btCancelar: TButton;
+    Panel1: TPanel;
+    Label4: TLabel;
+    btExcluir: TButton;
+    btEditar: TButton;
+    btSalvar: TButton;
+    procedure AoPressionarEnterNoCampoCodigoDoTanque(Sender: TObject;
+      var Key: Char);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure btCancelarClick(Sender: TObject);
+    procedure Salvar(Sender: TObject);
+    function Validar: Boolean;
+    procedure Editar(Sender: TObject);
+    procedure Excluir(Sender: TObject);
+  private
+    { Private declarations }
+    FEstado: TEstadosDaRotina;
+    procedure AlterarEstadoDosControles;
+    procedure LimparCampos;
+  public
+    { Public declarations }
+
+  end;
+
+var
+  fmCadastroTanque: TfmCadastroTanque;
+  Controller: TCadastroTanqueController;
+
+implementation
+
+{$R *.dfm}
+
+{ TfmCadastroTanque }
+
+procedure TfmCadastroTanque.AoPressionarEnterNoCampoCodigoDoTanque(
+  Sender: TObject; var Key: Char);
+var
+  Tanque: TTanque;
+  CodigoTanque: Integer;
+begin
+  if (Key = #13) and (edCodigoTanque.Text <> EmptyStr) then
+  begin
+    CodigoTanque := StrToInt(Trim(edCodigoTanque.Text));
+    if CodigoTanque <> 0 then
+    begin
+      Tanque := Controller.TanqueExiste(CodigoTanque);
+      if Assigned(Tanque) then
+      begin
+        edCodigoTanque.Text := IntToStr(Tanque.Codigo);
+        edDescricaoTanque.Text := Tanque.Descricao;
+        if SameText(Tanque.TipoCombustivel, 'G') then
+          cbTipoCombustivel.ItemIndex := 0
+        else
+          cbTipoCombustivel.ItemIndex := 1;
+        Tanque.Free;
+        if Pergunta('Deseja editar o Tanque?') then
+          FEstado := erAlteracao
+        else
+          FEstado := erCarregado;  
+        AlterarEstadoDosControles;  
+      end
+      else
+      begin
+        if Pergunta('Deseja incluir um novo Tanque?') then
+        begin
+          FEstado := erInclusao;
+          AlterarEstadoDosControles;
+          edDescricaoTanque.SetFocus;
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TfmCadastroTanque.btCancelarClick(Sender: TObject);
+begin
+  FEstado := erNone;
+  AlterarEstadoDosControles;
+  edCodigoTanque.SetFocus;
+end;
+
+procedure TfmCadastroTanque.Editar(Sender: TObject);
+begin
+  FEstado := erAlteracao;
+  AlterarEstadoDosControles;
+end;
+
+procedure TfmCadastroTanque.Excluir(Sender: TObject);
+var
+  Tanque: TTanque;
+  CodigoTanque: Integer;
+begin
+  if Pergunta('Deseja realmente excluir o Tanque?') then
+  begin
+    CodigoTanque := StrToIntDef(edCodigoTanque.Text, 0);
+    Tanque := TTanque.Create;
+    try
+      Tanque.Codigo := CodigoTanque;
+      if Controller.ExisteBombaVinculadaAEsseTanque(CodigoTanque) then
+      begin
+
+      end
+      else
+      begin
+        if Controller.ExcluirTanque(Tanque) then
+        begin
+          Mensagem('Tanque excluído com sucesso');
+          LimparCampos;
+          FEstado := erNone;
+          AlterarEstadoDosControles;
+        end
+        else
+          Mensagem('Erro ao excluir o Tanque');
+      end;
+    finally
+      FreeAndNil(Tanque);
+    end;
+  end;
+end;
+
+procedure TfmCadastroTanque.LimparCampos;
+begin
+  edCodigoTanque.Clear;
+  edDescricaoTanque.Clear;
+  cbTipoCombustivel.ItemIndex := -1;
+end;
+
+procedure TfmCadastroTanque.AlterarEstadoDosControles;
+begin
+  edCodigoTanque.Enabled := FEstado in [erNone, erCarregado];
+  edDescricaoTanque.Enabled := FEstado in [erInclusao, erAlteracao];
+  cbTipoCombustivel.Enabled := FEstado in [erInclusao, erAlteracao];
+  btSalvar.Enabled := FEstado in [erInclusao, erAlteracao];
+  btCancelar.Enabled := FEstado in [erInclusao, erAlteracao];
+  btEditar.Enabled := FEstado in [erCarregado];
+  btExcluir.Enabled := FEstado in [erCarregado];
+  if FEstado in [erNone, erCarregado] then
+    edCodigoTanque.SetFocus
+  else
+    if FEstado = erAlteracao then
+      edDescricaoTanque.SetFocus;
+end;
+
+procedure TfmCadastroTanque.FormActivate(Sender: TObject);
+begin
+  edCodigoTanque.SetFocus;
+  FEstado := erNone;
+end;
+
+procedure TfmCadastroTanque.FormCreate(Sender: TObject);
+begin
+  Controller := TCadastroTanqueController.Create;
+end;
+
+procedure TfmCadastroTanque.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(Controller);
+end;
+
+procedure TfmCadastroTanque.Salvar(Sender: TObject);
+var
+  Tanque: TTanque;
+  Persistencia: TTanquePersitencia;
+begin
+  if Validar then
+  begin
+    Tanque := TTanque.Create;
+    Persistencia := TTanquePersitencia.Create;
+    try
+      Tanque.Codigo := StrToIntDef(edCodigoTanque.Text, 0);
+      Tanque.Descricao := Trim(edDescricaoTanque.Text);
+      Tanque.TipoCombustivel := Copy(cbTipoCombustivel.Text, 1, 1);
+      if FEstado = erAlteracao then
+      begin
+        if Persistencia.Atualizar(Tanque) then
+        begin
+          Mensagem('Tanque alterado com sucesso');
+          FEstado := erCarregado;
+        end;
+      end
+      else
+        if Persistencia.Salvar(Tanque) then
+        begin
+          Mensagem('Tanque inserido com sucesso!');
+          FEstado := erCarregado;
+        end
+        else
+        begin
+          Mensagem('Erro ao gravar o tanque.');
+          FEstado := erNone;
+        end;
+
+      AlterarEstadoDosControles;
+    finally
+      FreeAndNil(Persistencia);
+      FreeAndNil(Tanque);
+    end;
+  end;
+end;
+
+function TfmCadastroTanque.Validar: Boolean;
+begin
+  Result := True;
+  if (edCodigoTanque.Text = EmptyStr) then
+  begin
+    Mensagem('Código do Tanque está vazio');
+    edCodigoTanque.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  if (edDescricaoTanque.Text = EmptyStr) then
+  begin
+    Mensagem('Descrição do Tanque está vazio');
+    edDescricaoTanque.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  if (cbTipoCombustivel.ItemIndex = -1) then
+  begin
+    Mensagem('Tipo do combustível está vazio');
+    cbTipoCombustivel.SetFocus;
+    Result := False;
+    Exit;
+  end;
+end;
+
+end.

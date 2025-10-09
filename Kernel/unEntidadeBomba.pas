@@ -3,7 +3,7 @@ unit unEntidadeBomba;
 interface
 
 uses
-   DBXpress, SqlExpr, SysUtils;
+   SqlExpr, SysUtils;
 
 type
   TBomba = class
@@ -28,7 +28,6 @@ type
     function Salvar(ABomba: TBomba): Boolean;
     function Atualizar(ABomba: TBomba): Boolean;
     function Excluir(ABomba: TBomba): Boolean;
-    function QuantidadeBombasPorTanque(ACodigoTanque: Integer): Integer;
     function Buscar(ACodigo: Integer): TBomba;
   end;
 
@@ -84,7 +83,7 @@ begin
     
     if not QueryBomba.IsEmpty then
     begin
-      QueryBomba.SQL.Text := 'UPDATE TANQUE SET DESCRICAO_BOMBA = :DESCRICAO_BOMBA, ' +
+      QueryBomba.SQL.Text := 'UPDATE BOMBA SET DESCRICAO_BOMBA = :DESCRICAO_BOMBA, ' +
         'CODIGO_TANQUE = :CODIGO_TANQUE WHERE CODIGO_BOMBA = :CODIGO_BOMBA';
       QueryBomba.ParamByName('CODIGO_BOMBA').AsInteger := ABomba.Codigo;
       QueryBomba.ParamByName('DESCRICAO_BOMBA').AsString := ABomba.Descricao;
@@ -142,24 +141,6 @@ begin
   end;
 end;
 
-function TBombaPersitencia.QuantidadeBombasPorTanque(
-  ACodigoTanque: Integer): Integer;
-var
-  QueryBomba: TSQLQuery;
-begin
-  Result := 0;
-  QueryBomba := TSQLQuery.Create(nil);
-  try
-    QueryBomba.SQLConnection := Conexao.FirebirdConnection;
-    QueryBomba.SQL.Text := 'SELECT COUNT(*) AS TOTAL FROM BOMBA WHERE ID_TANQUE = :ID_TANQUE';
-    QueryBomba.ParamByName('CODIGO_TANQUE').AsInteger := ACodigoTanque;
-    QueryBomba.Open;
-    Result := QueryBomba.FieldByName('TOTAL').AsInteger;
-  finally
-    FreeAndNil(QueryBomba);
-  end;
-end;
-
 function TBombaPersitencia.Salvar(ABomba: TBomba): Boolean;
 var
   QueryBomba: TSQLQuery;
@@ -174,7 +155,7 @@ begin
     if QueryBomba.IsEmpty then
     begin
       QueryBomba.SQL.Text := 'INSERT INTO BOMBA (CODIGO_BOMBA, DESCRICAO_BOMBA, CODIGO_TANQUE) ' +
-        ' VALUES (:CODIGO_TANQUE, :DESCRICAO_BOMBA, :CODIGO_TANQUE)';
+        ' VALUES (:CODIGO_BOMBA, :DESCRICAO_BOMBA, :CODIGO_TANQUE)';
       QueryBomba.ParamByName('CODIGO_BOMBA').AsInteger := ABomba.Codigo;
       QueryBomba.ParamByName('DESCRICAO_BOMBA').AsString := ABomba.Descricao;
       QueryBomba.ParamByName('CODIGO_TANQUE').AsInteger := ABomba.CodigoTanque;

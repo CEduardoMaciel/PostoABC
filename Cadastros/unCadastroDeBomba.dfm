@@ -48,6 +48,7 @@ object fmCadastroBomba: TfmCadastroBomba
     Height = 21
     MaxLength = 3
     TabOrder = 0
+    OnKeyPress = AoPressionarEnterNoCampoCodigo
   end
   object edDescricaoBomba: TEdit
     Left = 70
@@ -64,7 +65,8 @@ object fmCadastroBomba: TfmCadastroBomba
     Width = 75
     Height = 25
     Caption = 'Cancelar'
-    TabOrder = 2
+    TabOrder = 3
+    OnClick = Cancelar
   end
   object Panel1: TPanel
     Left = 0
@@ -73,7 +75,7 @@ object fmCadastroBomba: TfmCadastroBomba
     Height = 34
     Align = alTop
     BorderStyle = bsSingle
-    TabOrder = 3
+    TabOrder = 4
     ExplicitLeft = -8
     ExplicitWidth = 387
     object Label4: TLabel
@@ -90,13 +92,14 @@ object fmCadastroBomba: TfmCadastroBomba
       ParentFont = False
     end
     object btExcluir: TButton
-      Left = 325
+      Left = 327
       Top = 4
       Width = 58
       Height = 25
       Caption = 'Excluir'
       Enabled = False
       TabOrder = 0
+      OnClick = Excluir
     end
     object btEditar: TButton
       Left = 263
@@ -106,6 +109,7 @@ object fmCadastroBomba: TfmCadastroBomba
       Caption = 'Editar'
       Enabled = False
       TabOrder = 1
+      OnClick = Editar
     end
     object btSalvar: TButton
       Left = 201
@@ -115,6 +119,7 @@ object fmCadastroBomba: TfmCadastroBomba
       Caption = '&Salvar'
       Enabled = False
       TabOrder = 2
+      OnClick = Salvar
     end
   end
   object lcTanques: TDBLookupComboBox
@@ -125,7 +130,7 @@ object fmCadastroBomba: TfmCadastroBomba
     KeyField = 'CODIGO_TANQUE'
     ListField = 'DESCRICAO'
     ListSource = dsTanquesBomba
-    TabOrder = 4
+    TabOrder = 2
   end
   object dsTanquesBomba: TDataSource
     Left = 240

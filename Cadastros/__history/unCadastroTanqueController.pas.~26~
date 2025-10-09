@@ -1,0 +1,44 @@
+unit unCadastroTanqueController;
+
+interface
+
+uses
+  unEntidadeTanque, DBXpress, SqlExpr, SysUtils, dmConexao;
+
+type
+  TCadastroTanqueController = class
+  public
+    function TanqueExiste(ACodigoTanque: Integer): TTanque;
+    function ExcluirBomba(Bomba: TBomba): Boolean;
+  end;
+
+implementation
+
+{ TCadastroTanqueController }
+
+function TCadastroTanqueController.ExcluirBomba(Tanque: TTanque): Boolean;
+var
+  Persistencia: TTanquePersitencia;
+begin
+  Persistencia := TTanquePersitencia.Create;
+  try
+    Result := Persistencia.Excluir(TanqueExiste);
+  finally
+    Persistencia.Free;
+  end;
+end;
+
+function TCadastroTanqueController.TanqueExiste(
+  ACodigoTanque: Integer): TTanque;
+var
+  Persistencia: TTanquePersitencia;
+begin
+  Persistencia := TTanquePersitencia.Create;
+  try
+    Result := Persistencia.Buscar(ACodigoTanque);
+  finally
+    Persistencia.Free;
+  end;
+end;
+
+end.

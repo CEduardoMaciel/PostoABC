@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, dblookup, ExtCtrls, StdCtrls, Mask, unCadastroDeBombaController,
-  unTipos, DB, DBClient, DBCtrls;
+  unTipos, DB, DBClient, DBCtrls, unEntidadeBomba;
 
 type
   TfmCadastroBomba = class(TForm)
@@ -26,10 +26,17 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure Salvar(Sender: TObject);
+    procedure Editar(Sender: TObject);
+    procedure Cancelar(Sender: TObject);
+    procedure AoPressionarEnterNoCampoCodigo(Sender: TObject; var Key: Char);
+    procedure Excluir(Sender: TObject);
   private
     { Private declarations }
     FEstado: TEstadosDaRotina;
     procedure AlterarEstadoDosControles;
+    function Validar: Boolean;
+    procedure LimparCampos;
   public
     { Public declarations }
   end;
@@ -58,10 +65,95 @@ begin
       edDescricaoBomba.SetFocus;
 end;
 
+procedure TfmCadastroBomba.AoPressionarEnterNoCampoCodigo(Sender: TObject;
+  var Key: Char);
+var
+  Bomba: TBomba;
+  CodigoBomba: Integer;
+begin
+  if (Key = #13) and (edCodigoBomba.Text <> EmptyStr) then
+  begin
+    CodigoBomba := StrToInt(Trim(edCodigoBomba.Text));
+    if CodigoBomba <> 0 then
+    begin
+      Bomba := Controller.BombaExiste(CodigoBomba);
+      if Assigned(Bomba) then
+      begin
+        edCodigoBomba.Text := IntToStr(Bomba.Codigo);
+        edDescricaoBomba.Text := Bomba.Descricao;
+        lcTanques.KeyValue := Bomba.CodigoTanque;
+        Bomba.Free;
+
+        if Pergunta('Deseja editar a Bomba?') then
+          FEstado := erAlteracao
+        else
+          FEstado := erCarregado;  
+        AlterarEstadoDosControles;  
+      end
+      else
+      begin
+        if Pergunta('Deseja incluir uma nova Bomba?') then
+        begin
+          FEstado := erInclusao;
+          AlterarEstadoDosControles;
+          edDescricaoBomba.SetFocus;
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TfmCadastroBomba.Editar(Sender: TObject);
+begin
+  FEstado := erAlteracao;
+  AlterarEstadoDosControles;
+end;
+
+procedure TfmCadastroBomba.LimparCampos;
+begin
+  edCodigoBomba.Clear;
+  edDescricaoBomba.Clear;
+  lcTanques.KeyValue := Null;
+end;
+
+procedure TfmCadastroBomba.Excluir(Sender: TObject);
+var
+  Bomba: TBomba;
+  CodigoBomba: Integer;
+begin
+  if Pergunta('Deseja realmente excluir a Bomba?') then
+  begin
+    CodigoBomba := StrToIntDef(edCodigoBomba.Text, 0);
+    Bomba := TBomba.Create;
+    try
+      Bomba.Codigo := CodigoBomba;
+      if Controller.ExcluirBomba(Bomba) then
+      begin
+        Mensagem('Bomba excluída com sucesso');
+        LimparCampos;
+        FEstado := erNone;
+        AlterarEstadoDosControles;
+      end
+      else
+        Mensagem('Erro ao excluir a Bomba');
+    finally
+      FreeAndNil(Bomba);
+    end;
+  end;
+end;
+
+procedure TfmCadastroBomba.Cancelar(Sender: TObject);
+begin
+  FEstado := erNone;
+  AlterarEstadoDosControles;
+  edCodigoBomba.SetFocus;
+end;
+
 procedure TfmCadastroBomba.FormActivate(Sender: TObject);
 begin
   edCodigoBomba.SetFocus;
   FEstado := erNone;
+  AlterarEstadoDosControles;
 end;
 
 procedure TfmCadastroBomba.FormCreate(Sender: TObject);
@@ -78,6 +170,82 @@ procedure TfmCadastroBomba.FormShow(Sender: TObject);
 begin
   dsTanquesBomba.DataSet := Controller.CarregarTanques;
   lcTanques.ListSource := dsTanquesBomba;
+end;
+
+procedure TfmCadastroBomba.Salvar(Sender: TObject);
+var
+  Bomba: TBomba;
+  Persistencia: TBombaPersitencia;
+begin
+  if Validar then
+  begin
+    Bomba := TBomba.Create;
+    Persistencia := TBombaPersitencia.Create;
+    try
+      Bomba.Codigo := StrToIntDef(edCodigoBomba.Text, 0);
+      Bomba.Descricao := Trim(edDescricaoBomba.Text);
+      Bomba.CodigoTanque := lcTanques.KeyValue;
+      if not Controller.QuantidadeDeBombasVinculadasAEsseTanqueEhPermitida(Bomba.CodigoTanque) then
+      begin
+        Mensagem('Tanque atingiu a quantidade máxima de vínculo com Bombas(2)');
+        lcTanques.SetFocus;
+      end
+      else
+      begin
+        if FEstado = erAlteracao then
+        begin
+          if Persistencia.Atualizar(Bomba) then
+          begin
+            Mensagem('Bomba alterada com sucesso');
+            FEstado := erCarregado;
+          end;
+        end
+        else
+          if Persistencia.Salvar(Bomba) then
+          begin
+            Mensagem('Bomba inserida com sucesso!');
+            FEstado := erCarregado;
+          end
+          else
+          begin
+            Mensagem('Erro ao gravar a bomba.');
+            FEstado := erNone;
+          end;
+        AlterarEstadoDosControles;
+      end;
+    finally
+      FreeAndNil(Persistencia);
+      FreeAndNil(Bomba);
+    end;
+  end;
+end;
+
+function TfmCadastroBomba.Validar: Boolean;
+begin
+  Result := True;
+  if (edCodigoBomba.Text = EmptyStr) then
+  begin
+    Mensagem('Código da Bomba está vazio');
+    edCodigoBomba.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  if (edDescricaoBomba.Text = EmptyStr) then
+  begin
+    Mensagem('Descrição da Bomba está vazio');
+    edDescricaoBomba.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  if (lcTanques.KeyValue = Null) then
+  begin
+    Mensagem('Nenhum tanque definido');
+    lcTanques.SetFocus;
+    Result := False;
+    Exit;
+  end;
 end;
 
 end.
