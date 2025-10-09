@@ -1,0 +1,54 @@
+unit unPrincipal;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Menus, dmConexao;
+
+type
+  TfmPrincipal = class(TForm)
+    MainMenu1: TMainMenu;
+    Cadastros1: TMenuItem;
+    anque1: TMenuItem;
+    Bomba1: TMenuItem;
+    Movimentaes1: TMenuItem;
+    Abastecimento1: TMenuItem;
+    Relatrios1: TMenuItem;
+    Abastecimento2: TMenuItem;
+    procedure FormCreate(Sender: TObject);
+    procedure IniciarCadastroTanque(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmPrincipal: TfmPrincipal;
+
+implementation
+
+{$R *.dfm}
+uses
+  unCadastroTanque;
+
+procedure TfmPrincipal.FormCreate(Sender: TObject);
+begin
+  Conexao := TConexao.Create(Self);
+  Conexao.FirebirdConnection.Connected := True;
+end;
+
+procedure TfmPrincipal.IniciarCadastroTanque(Sender: TObject);
+var
+  FormTanque: TfmCadastroTanque;
+begin
+  FormTanque := TfmCadastroTanque.Create(Self);
+  try
+    FormTanque.ShowModal;
+  finally
+    FreeAndNil(FormTanque);
+  end;
+end;
+
+end.

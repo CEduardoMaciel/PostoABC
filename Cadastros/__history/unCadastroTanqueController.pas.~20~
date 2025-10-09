@@ -1,0 +1,35 @@
+unit unCadastroTanqueController;
+
+interface
+
+uses
+  unEntidadeTanque, DBXpress, SqlExpr, SysUtils, dmConexao;
+
+type
+  TCadastroTanqueController = class
+  public
+    function TanqueExiste(ACodigoTanque: Integer): TTanque;
+  end;
+
+implementation
+
+{ TCadastroTanqueController }
+
+function TCadastroTanqueController.TanqueExiste(
+  ACodigoTanque: Integer): TTanque;
+var
+  Persistencia: TTanquePersitencia;
+  Tanque: TTanque;
+begin
+  Persistencia := TTanquePersistencia.Create;
+  try
+    Tanque := Persistencia.BuscarPorID(AID);
+    Result := Assigned(Tanque);
+    if Assigned(Tanque) then
+      Tanque.Free;
+  finally
+    Persistencia.Free;
+  end;
+end;
+
+end.

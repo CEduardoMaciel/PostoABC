@@ -1,0 +1,41 @@
+unit unPrincipal;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Menus;
+
+type
+  TfmPrincipal = class(TForm)
+    MainMenu1: TMainMenu;
+    Cadastros1: TMenuItem;
+    anque1: TMenuItem;
+    Bomba1: TMenuItem;
+    Movimentaes1: TMenuItem;
+    Abastecimento1: TMenuItem;
+    Relatrios1: TMenuItem;
+    Abastecimento2: TMenuItem;
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmPrincipal: TfmPrincipal;
+
+implementation
+
+{$R *.dfm}
+uses
+  dmConexao;
+
+procedure TfmPrincipal.FormCreate(Sender: TObject);
+begin
+  DataModuleConexao := TDataModuleConexao.Create(Self);
+  DataModuleConexao.FirebirdConnection.Connected := True;
+end;
+
+end.

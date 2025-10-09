@@ -1,0 +1,10 @@
+unit unTipos;
+
+interface
+
+type
+  TEstadosDaRotina = (erInclusao, irAlteracao);
+
+implementation
+
+end.

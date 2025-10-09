@@ -1,0 +1,43 @@
+unit unCadastroTanqueController;
+
+interface
+
+uses
+  unEntidadeTanque, DBXpress, SqlExpr, SysUtils, dmConexao;
+
+type
+  TCadastroTanqueController = class
+  public
+    function TanqueExiste(ACodigoTanque: Integer): TTanque;
+  end;
+
+implementation
+
+{ TCadastroTanqueController }
+
+function TCadastroTanqueController.TanqueExiste(
+  ACodigoTanque: Integer): TTanque;
+var
+  QueryTanque: TSQLQuery;
+  Tanque: TTanque;
+begin
+  Result := nil;
+  QueryTanque := TSQLQuery.Create(nil);
+  try
+    QueryTanque.SQLConnection := Conexao.FirebirdConnection;
+    QueryTanque.SQL.Text := 'SELECT * FROM TANQUE WHERE CODIGO_TANQUE = ' +
+      QuotedStr(IntToStr(ACodigoTanque));
+    QueryTanque.Open;
+    if not QueryTanque.IsEmpty then
+    begin
+      Tanque := TTanque.Create;
+      Result.Codigo := QueryTanque.ParamByName('CODIGO_TANQUE').AsInteger;
+      Result.Descricao := QueryTanque.ParamByName('DESCRICAO').AsString;
+      Result.TipoCombustivel := QueryTanque.ParamByName('TIPO_COMBUSTIVEL').AsString;
+    end;
+  finally
+    FreeAndNil(QueryTanque);
+  end;
+end;
+
+end.

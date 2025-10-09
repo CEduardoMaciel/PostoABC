@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2025/10/08 22:16:54.212.pas,C:\Users\cedua\Documents\RAD Studio\Projects\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\unPrincipal.pas</Transaction>
+    <Transaction>2025/10/08 22:16:54.213.dfm,C:\Users\cedua\Documents\RAD Studio\Projects\Unit1.dfm=C:\ProjetoFortes\PostoABC\PostoABC\unPrincipal.dfm</Transaction>
+    <Transaction>2025/10/08 22:17:04.469.dproj,C:\Users\cedua\Documents\RAD Studio\Projects\Project1.dproj=C:\ProjetoFortes\PostoABC\PostoABC\PostoABC.dproj</Transaction>
+    <Transaction>2025/10/08 22:23:47.816.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unEntidades.pas</Transaction>
+    <Transaction>2025/10/08 22:39:31.940.pas,C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unEntidades.pas=C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unEntidadeTanque.pas</Transaction>
+    <Transaction>2025/10/08 22:45:10.743.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unEntidadeBomba.pas</Transaction>
+    <Transaction>2025/10/08 22:50:05.483.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unEntidadeAbastecimento.pas</Transaction>
+    <Transaction>2025/10/08 23:49:01.004.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Conexao\dmConexao.pas</Transaction>
+    <Transaction>2025/10/08 23:49:01.004.dfm,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.dfm=C:\ProjetoFortes\PostoABC\PostoABC\Conexao\dmConexao.dfm</Transaction>
+    <Transaction>2025/10/09 09:59:40.977.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Cadastros\unCadastroTanque.pas</Transaction>
+    <Transaction>2025/10/09 09:59:40.978.dfm,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.dfm=C:\ProjetoFortes\PostoABC\PostoABC\Cadastros\unCadastroTanque.dfm</Transaction>
+    <Transaction>2025/10/09 11:11:30.380.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Cadastros\unCadastroTanqueController.pas</Transaction>
+    <Transaction>2025/10/09 11:13:05.751.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unPersistencia.pas</Transaction>
+    <Transaction>2025/10/09 11:21:29.316.pas,C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unPersistencia.pas=</Transaction>
+    <Transaction>2025/10/09 11:24:41.780.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unEntidadeBase.pas</Transaction>
+    <Transaction>2025/10/09 11:27:34.590.pas,C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unEntidadeBase.pas=</Transaction>
+    <Transaction>2025/10/09 13:03:18.662.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unTipos.pas</Transaction>
+  </Transactions>
+</BorlandProject>

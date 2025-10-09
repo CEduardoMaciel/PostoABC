@@ -1,0 +1,20 @@
+unit unTipos;
+
+interface
+
+uses
+  Dialogs;
+
+type
+  TEstadosDaRotina = (erNone, erInclusao, erAlteracao);
+
+function Pergunta(const Mensagem: string): Boolean;
+
+implementation
+
+function Pergunta(const Mensagem: string): Boolean;
+begin
+  Result := MessageDlg(Mensagem, mtConfirmation, [mbYes, mbNo], 0) = mrYes;
+end;
+
+end.
