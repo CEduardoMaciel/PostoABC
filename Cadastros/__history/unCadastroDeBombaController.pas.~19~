@@ -1,0 +1,65 @@
+unit unCadastroDeBombaController;
+
+interface
+
+uses
+  unEntidadeBomba, DBXpress, SqlExpr, SysUtils, dmConexao, DBCLient;
+
+type
+  TCadastroBombaController = class
+  public
+    function BombaExiste(ACodigoBomba: Integer): TBomba;
+    function SalvarBomba(Bomba: TBomba): Boolean;
+    function CarregarTanques: TClientDataSet;
+  end;
+
+implementation
+
+{ TCadastroBombaController }
+
+function TCadastroBombaController.BombaExiste(ACodigoBomba: Integer): TBomba;
+var
+  Persistencia: TBombaPersitencia;
+begin
+  Persistencia := TBombaPersitencia.Create;
+  try
+    Result := Persistencia.Buscar(ACodigoBomba);
+  finally
+    Persistencia.Free;
+  end;
+end;
+
+function TCadastroBombaController.CarregarTanques: TClientDataSet;
+begin
+  if Conexao.sqTanquesBomba.Active then
+    Conexao.sqTanquesBomba.Close;
+  Conexao.sqTanquesBomba.Open;
+  Result := Conexao.cdsTanquesBomba;
+end;
+
+function TCadastroBombaController.SalvarBomba(Bomba: TBomba): Boolean;
+var
+  Persistencia: TBombaPersitencia;
+  QuantidadeBombas: Integer;
+begin
+  Result := False;
+  Persistencia := TBombaPersitencia.Create;
+  try
+    QuantidadeBombas := Persistencia.QuantidadeBombasPorTanque(Bomba.CodigoTanque);
+
+    if (Bomba.Codigo = 0) and (QuantidadeBombas >= 2) then
+      raise Exception.Create('Esse tanque já está vinculado a 2 bombas.');
+
+    if Bomba.Codigo = 0 then
+      Result := Persistencia.Salvar(Bomba)
+    else
+      Result := Persistencia.Atualizar(Bomba);
+  finally
+    Persistencia.Free;
+  end;
+end;
+
+
+end;
+
+end.

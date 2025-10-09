@@ -60,7 +60,6 @@ begin
     CodigoTanque := StrToInt(Trim(edCodigoTanque.Text));
     if CodigoTanque <> 0 then
     begin
-
       Tanque := Controller.TanqueExiste(CodigoTanque);
       if Assigned(Tanque) then
       begin

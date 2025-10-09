@@ -30,6 +30,10 @@
     <DelphiCompile Include="PostoABC.dpr">
       <MainSource>MainSource</MainSource>
     </DelphiCompile>
+    <DCCReference Include="Cadastros\unCadastroDeBomba.pas">
+      <Form>fmCadastroBomba</Form>
+    </DCCReference>
+    <DCCReference Include="Cadastros\unCadastroDeBombaController.pas" />
     <DCCReference Include="Cadastros\unCadastroTanque.pas">
       <Form>fmCadastroTanque</Form>
     </DCCReference>

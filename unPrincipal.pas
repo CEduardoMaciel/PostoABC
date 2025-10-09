@@ -18,6 +18,7 @@ type
     Abastecimento2: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure IniciarCadastroTanque(Sender: TObject);
+    procedure IniciarCadastroDeBomba(Sender: TObject);
   private
     { Private declarations }
   public
@@ -31,12 +32,24 @@ implementation
 
 {$R *.dfm}
 uses
-  unCadastroTanque;
+  unCadastroTanque, unCadastroDeBomba;
 
 procedure TfmPrincipal.FormCreate(Sender: TObject);
 begin
   Conexao := TConexao.Create(Self);
   Conexao.FirebirdConnection.Connected := True;
+end;
+
+procedure TfmPrincipal.IniciarCadastroDeBomba(Sender: TObject);
+var
+  FormBomba: TfmCadastroBomba;
+begin
+  FormBomba := TfmCadastroBomba.Create(Self);
+  try
+    FormBomba.ShowModal;
+  finally
+    FreeAndNil(FormBomba);
+  end;
 end;
 
 procedure TfmPrincipal.IniciarCadastroTanque(Sender: TObject);

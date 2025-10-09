@@ -26,6 +26,13 @@ type
     sqAbastecimentoLITROS: TFMTBCDField;
     sqAbastecimentoVALOR_TOTAL: TFMTBCDField;
     sqAbastecimentoIMPOSTO: TFMTBCDField;
+    sqTanquesBomba: TSQLQuery;
+    IntegerField1: TIntegerField;
+    StringField1: TStringField;
+    dspTanquesBomba: TDataSetProvider;
+    cdsTanquesBomba: TClientDataSet;
+    cdsTanquesBombaCODIGO_TANQUE: TIntegerField;
+    cdsTanquesBombaDESCRICAO: TStringField;
   private
     { Private declarations }
   public

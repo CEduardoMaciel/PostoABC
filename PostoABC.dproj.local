@@ -18,5 +18,9 @@
     <Transaction>2025/10/09 11:24:41.780.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unEntidadeBase.pas</Transaction>
     <Transaction>2025/10/09 11:27:34.590.pas,C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unEntidadeBase.pas=</Transaction>
     <Transaction>2025/10/09 13:03:18.662.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unTipos.pas</Transaction>
+    <Transaction>2025/10/09 14:34:18.290.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Cadastros\unCadastroDeBomba.pas</Transaction>
+    <Transaction>2025/10/09 14:34:18.290.dfm,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.dfm=C:\ProjetoFortes\PostoABC\PostoABC\Cadastros\unCadastroDeBomba.dfm</Transaction>
+    <Transaction>2025/10/09 14:55:28.007.pas,C:\ProjetoFortes\PostoABC\PostoABC\Kernel\unEntidadeBase.pas=</Transaction>
+    <Transaction>2025/10/09 15:08:50.175.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Cadastros\unCadastroDeBombaController.pas</Transaction>
   </Transactions>
 </BorlandProject>

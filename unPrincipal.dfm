@@ -29,6 +29,7 @@ object fmPrincipal: TfmPrincipal
       end
       object Bomba1: TMenuItem
         Caption = 'Bomba'
+        OnClick = IniciarCadastroDeBomba
       end
     end
     object Movimentaes1: TMenuItem

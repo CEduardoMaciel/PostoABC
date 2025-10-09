@@ -9,7 +9,9 @@ uses
   dmConexao in 'Conexao\dmConexao.pas' {Conexao: TDataModule},
   unCadastroTanque in 'Cadastros\unCadastroTanque.pas' {fmCadastroTanque},
   unCadastroTanqueController in 'Cadastros\unCadastroTanqueController.pas',
-  unTipos in 'Kernel\unTipos.pas';
+  unTipos in 'Kernel\unTipos.pas',
+  unCadastroDeBomba in 'Cadastros\unCadastroDeBomba.pas' {fmCadastroBomba},
+  unCadastroDeBombaController in 'Cadastros\unCadastroDeBombaController.pas';
 
 {$R *.res}
 
@@ -18,5 +20,6 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TConexao, Conexao);
   Application.CreateForm(TfmPrincipal, fmPrincipal);
+  Application.CreateForm(TfmCadastroBomba, fmCadastroBomba);
   Application.Run;
 end.

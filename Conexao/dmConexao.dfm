@@ -1,7 +1,7 @@
 object Conexao: TConexao
   OldCreateOrder = False
-  Height = 393
-  Width = 543
+  Height = 371
+  Width = 320
   object FirebirdConnection: TSQLConnection
     DriverName = 'Interbase'
     GetDriverFunc = 'getSQLDriverINTERBASE'
@@ -37,6 +37,7 @@ object Conexao: TConexao
       'WaitOnLocks=True'
       'Trim Char=False')
     VendorLib = 'GDS32.DLL'
+    Connected = True
     Left = 40
     Top = 56
   end
@@ -138,5 +139,46 @@ object Conexao: TConexao
     DataSet = sqAbastecimento
     Left = 176
     Top = 184
+  end
+  object sqTanquesBomba: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQL.Strings = (
+      
+        'SELECT CODIGO_TANQUE, DESCRICAO FROM TANQUE ORDER BY CODIGO_TANQ' +
+        'UE')
+    SQLConnection = FirebirdConnection
+    Left = 24
+    Top = 256
+    object IntegerField1: TIntegerField
+      FieldName = 'CODIGO_TANQUE'
+      Required = True
+    end
+    object StringField1: TStringField
+      FieldName = 'DESCRICAO'
+      Required = True
+      Size = 50
+    end
+  end
+  object dspTanquesBomba: TDataSetProvider
+    DataSet = sqTanquesBomba
+    Left = 24
+    Top = 304
+  end
+  object cdsTanquesBomba: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspTanquesBomba'
+    Left = 104
+    Top = 256
+    object cdsTanquesBombaCODIGO_TANQUE: TIntegerField
+      FieldName = 'CODIGO_TANQUE'
+      Required = True
+    end
+    object cdsTanquesBombaDESCRICAO: TStringField
+      FieldName = 'DESCRICAO'
+      Required = True
+      Size = 50
+    end
   end
 end

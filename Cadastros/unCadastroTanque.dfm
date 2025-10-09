@@ -97,6 +97,7 @@ object fmCadastroTanque: TfmCadastroTanque
     Top = 59
     Width = 46
     Height = 21
+    MaxLength = 3
     TabOrder = 0
     OnKeyPress = AoPressionarEnterNoCampoCodigoDoTanque
   end
@@ -106,6 +107,7 @@ object fmCadastroTanque: TfmCadastroTanque
     Width = 309
     Height = 21
     Enabled = False
+    MaxLength = 50
     TabOrder = 1
   end
   object cbTipoCombustivel: TComboBox
