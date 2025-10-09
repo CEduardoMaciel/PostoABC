@@ -10,7 +10,7 @@ type
   public
     function BombaExiste(ACodigoBomba: Integer): TBomba;
     function QuantidadeDeBombasVinculadasAEsseTanqueEhPermitida(ACodigoTanque: Integer): Boolean;
-    function ExcluirBomba(Bomba: TBomba): Boolean;
+    function ExcluirBomba(ABomba: TBomba): Boolean;
     function CarregarTanques: TClientDataSet;
   end;
 
@@ -41,13 +41,13 @@ begin
   Result := Conexao.cdsTanquesBomba;
 end;
 
-function TCadastroBombaController.ExcluirBomba(Bomba: TBomba): Boolean;
+function TCadastroBombaController.ExcluirBomba(ABomba: TBomba): Boolean;
 var
   Persistencia: TBombaPersitencia;
 begin
   Persistencia := TBombaPersitencia.Create;
   try
-    Result := Persistencia.Excluir(Bomba);
+    Result := Persistencia.Excluir(ABomba);
   finally
     FreeAndNil(Persistencia);
   end;

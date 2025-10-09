@@ -2,7 +2,8 @@ unit unEntidadeAbastecimento;
 
 interface
 
-uses unEntidadeBomba, SysUtils;
+uses
+  SqlExpr, SysUtils;
 
 type
   TAbastecimento = class
@@ -12,11 +13,8 @@ type
     FData: TDateTime;
     FLitros: Double;
     FValor: Double;
-    FBomba: TBomba;
     function GetCodigo: Integer;
     procedure SetCodigo(const Value: Integer);
-    function GetBomba: TBomba;
-    procedure SetBomba(const Value: TBomba);
     function GetData: TDateTime;
     procedure SetData(const Value: TDateTime);
     function GetLitros: Double;
@@ -32,11 +30,21 @@ type
     property Data: TDateTime read GetData write SetData;
     property Litros: Double read GetLitros write SetLitros;
     property Valor: Double read GetValor write SetValor;
-    property Bomba: TBomba read GetBomba write SetBomba;
     property Imposto: Double read GetImposto;
   end;
 
+  TAbastecimentoPersitencia = class
+  public
+    function Salvar(AAbastecimento: TAbastecimento): Boolean;
+    function Atualizar(AAbastecimento: TAbastecimento): Boolean;
+    function Excluir(AAbastecimento: TAbastecimento): Boolean;
+    function Buscar(ACodigo: Integer): TAbastecimento;
+  end;
+
 implementation
+
+uses
+  dmConexao;
 
 { TAbastecimento }
 
@@ -58,16 +66,6 @@ end;
 procedure TAbastecimento.SetCodigoBomba(const Value: Integer);
 begin
   FCodigoBomba := Value;
-end;
-
-function TAbastecimento.GetBomba: TBomba;
-begin
-  Result := FBomba;
-end;
-
-procedure TAbastecimento.SetBomba(const Value: TBomba);
-begin
-  FBomba := Value;
 end;
 
 function TAbastecimento.GetData: TDateTime;
@@ -103,6 +101,120 @@ end;
 function TAbastecimento.GetImposto: Double;
 begin
   Result := FValor * 0.13;
+end;
+
+{ TAbastecimentoPersitencia }
+
+function TAbastecimentoPersitencia.Atualizar(
+  AAbastecimento: TAbastecimento): Boolean;
+var
+  QueryAbastecimento: TSQLQuery;
+begin
+  QueryAbastecimento := TSQLQuery.Create(nil);
+  try
+    QueryAbastecimento.SQLConnection := Conexao.FirebirdConnection;
+    QueryAbastecimento.SQL.Text := 'SELECT CODIGO_ABASTECIMENTO FROM ' +
+      'ABASTECIMENTO WHERE CODIGO_ABASTECIMENTO = ' + QuotedStr(IntToStr(AAbastecimento.Codigo));
+    QueryAbastecimento.Open;
+    
+    if not QueryAbastecimento.IsEmpty then
+    begin
+      QueryAbastecimento.SQL.Text := 'UPDATE ABASTECIMENTO SET DATA_ABASTECIMENTO = :DATA_ABASTECIMENTO, ' +
+        'CODIGO_BOMBA = :CODIGO_BOMBA, LITROS = :LITROS, VALOR_TOTAL = :VALOR_TOTAL ' +
+        'WHERE CODIGO_ABASTECIMENTO = :CODIGO_ABASTECIMENTO';
+      QueryAbastecimento.ParamByName('CODIGO_ABASTECIMENTO').AsInteger := AAbastecimento.Codigo;
+      QueryAbastecimento.ParamByName('DATA_ABASTECIMENTO').AsDate := AAbastecimento.Data;
+      QueryAbastecimento.ParamByName('CODIGO_BOMBA').AsInteger := AAbastecimento.CodigoBomba;
+      QueryAbastecimento.ParamByName('LITROS').AsFloat := AAbastecimento.Litros;
+      QueryAbastecimento.ParamByName('VALOR_TOTAL').AsFloat := AAbastecimento.Valor;
+      QueryAbastecimento.ExecSQL;
+      Result := True;
+    end
+    else
+      Result := False;
+  finally
+    FreeAndNil(QueryAbastecimento);
+  end;
+end;
+
+function TAbastecimentoPersitencia.Buscar(ACodigo: Integer): TAbastecimento;
+var
+  QueryAbastecimento: TSQLQuery;
+  Abastecimento: TAbastecimento;
+begin
+  Result := nil;
+  QueryAbastecimento := TSQLQuery.Create(nil);
+  try
+    QueryAbastecimento.SQLConnection := Conexao.FirebirdConnection;
+    QueryAbastecimento.SQL.Text := 'SELECT CODIGO_ABASTECIMENTO, ' +
+      'DATA_ABASTECIMENTO, CODIGO_BOMBA, LITROS, VALOR_TOTAL FROM ABASTECIMENTO ' +
+      'WHERE CODIGO_ABASTECIMENTO = :CODIGO_ABASTECIMENTO';
+    QueryAbastecimento.ParamByName('CODIGO_ABASTECIMENTO').AsInteger := ACodigo;
+    QueryAbastecimento.Open;
+
+    if not QueryAbastecimento.IsEmpty then
+    begin
+      Abastecimento := TAbastecimento.Create;
+      Abastecimento.Codigo := QueryAbastecimento.ParamByName('CODIGO_ABASTECIMENTO').AsInteger;
+      Abastecimento.Data := QueryAbastecimento.ParamByName('DATA_ABASTECIMENTO').AsDate;
+      Abastecimento.CodigoBomba := QueryAbastecimento.ParamByName('CODIGO_BOMBA').AsInteger;
+      Abastecimento.Litros := QueryAbastecimento.ParamByName('LITROS').AsFloat;
+      Abastecimento.Valor := QueryAbastecimento.ParamByName('VALOR_TOTAL').AsFloat;
+
+      Result := Abastecimento;
+    end;
+  finally
+    FreeAndNil(QueryAbastecimento);
+  end;
+end;
+
+function TAbastecimentoPersitencia.Excluir(
+  AAbastecimento: TAbastecimento): Boolean;
+var
+  QueryAbastecimento: TSQLQuery;
+begin
+  QueryAbastecimento := TSQLQuery.Create(nil);
+  try
+    QueryAbastecimento.SQLConnection := Conexao.FirebirdConnection;
+    QueryAbastecimento.SQL.Text := 'DELETE FROM ABASTECIMENTO WHERE CODIGO_ABASTECIMENTO = :CODIGO_ABASTECIMENTO';
+    QueryAbastecimento.ParamByName('CODIGO_ABASTECIMENTO').AsInteger := AAbastecimento.Codigo;
+    QueryAbastecimento.ExecSQL;
+    Result := True;
+  finally
+    FreeAndNil(QueryAbastecimento);
+  end;
+end;
+
+function TAbastecimentoPersitencia.Salvar(
+  AAbastecimento: TAbastecimento): Boolean;
+var
+  QueryAbastecimento: TSQLQuery;
+begin
+  QueryAbastecimento := TSQLQuery.Create(nil);
+  try
+    QueryAbastecimento.SQLConnection := Conexao.FirebirdConnection;
+    QueryAbastecimento.SQL.Text := 'SELECT COUNT(*) FROM ABASTECIMENTO WHERE CODIGO_ABASTECIMENTO = ' +
+      QuotedStr(IntToStr(AAbastecimento.Codigo));
+    QueryAbastecimento.ExecSQL;
+
+    if QueryAbastecimento.IsEmpty then
+    begin
+      QueryAbastecimento.SQL.Text := 'INSERT INTO ABASTECIMENTO (CODIGO_ABASTECIMENTO, ' +
+        'CODIGO_BOMBA, LITROS, VALOR_TOTAL, DATA_ABASTECIMENTO) ' +
+        ' VALUES (:CODIGO_ABASTECIMENTO, :CODIGO_BOMBA, :LITROS, :VALOR_TOTAL, :DATA_ABASTECIMENTO)';
+      QueryAbastecimento.ParamByName('CODIGO_ABASTECIMENTO').AsInteger := AAbastecimento.Codigo;
+      QueryAbastecimento.ParamByName('CODIGO_BOMBA').AsInteger := AAbastecimento.CodigoBomba;
+      QueryAbastecimento.ParamByName('LITROS').AsFloat := AAbastecimento.Litros;
+      QueryAbastecimento.ParamByName('VALOR_TOTAL').AsFloat := AAbastecimento.Valor;
+      QueryAbastecimento.ParamByName('DATA_ABASTECIMENTO').AsDate := AAbastecimento.Data;
+      QueryAbastecimento.ExecSQL;
+      Result := True;
+    end
+    else
+      Result := False;
+  finally
+    FreeAndNil(QueryAbastecimento);
+  end;
 end;
 
 end.

@@ -1,0 +1,282 @@
+unit unCadastroDeAbastecimento;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DBCtrls, DB, ExtCtrls, StdCtrls, Mask, unEntidadeAbastecimento,
+  unCadastroDeAbastecimentoController, unTipos;
+
+type
+  TfmCadastroAbastecimento = class(TForm)
+    edCodigoAbastecimento: TMaskEdit;
+    Label1: TLabel;
+    Label3: TLabel;
+    btCancelar: TButton;
+    Panel1: TPanel;
+    Label4: TLabel;
+    btExcluir: TButton;
+    btEditar: TButton;
+    btSalvar: TButton;
+    dsBombasAbastecimento: TDataSource;
+    lcBombas: TDBLookupComboBox;
+    Label2: TLabel;
+    Label5: TLabel;
+    edLitros: TEdit;
+    edValor: TEdit;
+    edData: TMaskEdit;
+    Label6: TLabel;
+    procedure ApenasNumerais(Sender: TObject; var Key: Char);
+    procedure AoPressionarEnterNoCampoCodigo(Sender: TObject; var Key: Char);
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure Salvar(Sender: TObject);
+    procedure Editar(Sender: TObject);
+    procedure Excluir(Sender: TObject);
+    procedure Cancelar(Sender: TObject);
+  private
+    { Private declarations }
+    FEstado: TEstadosDaRotina;
+    procedure AlterarEstadoDosControles;
+    function Validar: Boolean;
+    procedure LimparCampos;
+  public
+    { Public declarations }
+  end;
+
+var
+  fmCadastroAbastecimento: TfmCadastroAbastecimento;
+  Controller: TCadastroAbastecimentoController;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmCadastroAbastecimento.AlterarEstadoDosControles;
+begin
+  edCodigoAbastecimento.Enabled := FEstado in [erNone, erCarregado];
+  lcBombas.Enabled := FEstado in [erInclusao, erAlteracao];
+  btSalvar.Enabled := FEstado in [erInclusao, erAlteracao];
+  btCancelar.Enabled := FEstado in [erInclusao, erAlteracao];
+  btEditar.Enabled := FEstado in [erCarregado];
+  btExcluir.Enabled := FEstado in [erCarregado];
+  edData.Enabled := FEstado in [erInclusao, erAlteracao];
+  edLitros.Enabled := FEstado in [erInclusao, erAlteracao];
+  edValor.Enabled := FEstado in [erInclusao, erAlteracao];
+  if FEstado in [erNone, erCarregado] then
+    edCodigoAbastecimento.SetFocus
+  else
+    if FEstado = erAlteracao then
+      lcBombas.SetFocus;
+end;
+
+procedure TfmCadastroAbastecimento.AoPressionarEnterNoCampoCodigo(
+  Sender: TObject; var Key: Char);
+var
+  Abastecimento: TAbastecimento;
+  CodigoAbastecimento: Integer;
+begin
+  if (Key = #13) and (edCodigoAbastecimento.Text <> EmptyStr) then
+  begin
+    CodigoAbastecimento := StrToInt(Trim(edCodigoAbastecimento.Text));
+    if CodigoAbastecimento <> 0 then
+    begin
+      Abastecimento := Controller.AbastecimentoExiste(CodigoAbastecimento);
+      if Assigned(Abastecimento) then
+      begin
+        edCodigoAbastecimento.Text := IntToStr(Abastecimento.Codigo);
+        lcBombas.KeyValue := Abastecimento.CodigoBomba;
+        edData.Text := FormatDateTime('dd/mm/yyyy', Abastecimento.Data);
+        edLitros.Text := FormatFloat('0.00', Abastecimento.Litros);
+        edValor.Text := FormatFloat('0.00', Abastecimento.Valor);
+        Abastecimento.Free;
+
+        if Pergunta('Deseja editar o Abastecimento?') then           
+          FEstado := erAlteracao
+        else
+          FEstado := erCarregado;  
+        AlterarEstadoDosControles;  
+      end
+      else
+      begin
+        if Pergunta('Deseja incluir um novo Abastecimento?') then
+        begin
+          FEstado := erInclusao;
+          AlterarEstadoDosControles;
+          lcBombas.SetFocus;
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TfmCadastroAbastecimento.ApenasNumerais(Sender: TObject;
+  var Key: Char);
+begin
+  if not (Key in ['0'..'9', #44, #13, #8]) then
+    Key := #0;
+end;
+
+procedure TfmCadastroAbastecimento.Cancelar(Sender: TObject);
+begin
+  FEstado := erNone;
+  AlterarEstadoDosControles;
+  edCodigoAbastecimento.SetFocus;
+end;
+
+procedure TfmCadastroAbastecimento.Editar(Sender: TObject);
+begin
+  FEstado := erAlteracao;
+  AlterarEstadoDosControles;
+end;
+
+procedure TfmCadastroAbastecimento.Excluir(Sender: TObject);
+var
+  Abastecimento: TAbastecimento;
+  CodigoAbastecimento: Integer;
+begin
+  if Pergunta('Deseja realmente excluir o Abastecimento?') then
+  begin
+    CodigoAbastecimento := StrToIntDef(edCodigoAbastecimento.Text, 0);
+    Abastecimento := TAbastecimento.Create;
+    try
+      Abastecimento.Codigo := CodigoAbastecimento;
+      if Controller.ExcluirAbastecimento(Abastecimento) then
+      begin
+        Mensagem('Abastecimento excluído com sucesso');
+        LimparCampos;
+        FEstado := erNone;
+        AlterarEstadoDosControles;
+      end
+      else
+        Mensagem('Erro ao excluir a Bomba');
+    finally
+      FreeAndNil(Abastecimento);
+    end;
+  end;end;
+
+procedure TfmCadastroAbastecimento.Salvar(Sender: TObject);
+var
+  Abastecimento: TAbastecimento;
+  Persistencia: TAbastecimentoPersitencia;
+begin
+  if Validar then
+  begin
+    Abastecimento := TAbastecimento.Create;
+    Persistencia := TAbastecimentoPersitencia.Create;
+    try
+      Abastecimento.Codigo := StrToIntDef(edCodigoAbastecimento.Text, 0);
+      Abastecimento.CodigoBomba := lcBombas.KeyValue;
+      Abastecimento.Data := StrToDateTime(edData.Text);
+      Abastecimento.Litros := StrToFloat(edLitros.Text);
+      Abastecimento.Valor := StrToFloat(edValor.Text);
+
+      if FEstado = erAlteracao then
+      begin
+        if Persistencia.Atualizar(Abastecimento) then
+        begin
+          Mensagem('Bomba alterada com sucesso');
+          FEstado := erCarregado;
+        end;
+      end
+      else
+        if Persistencia.Salvar(Abastecimento) then
+        begin
+          Mensagem('Bomba inserida com sucesso!');
+          FEstado := erCarregado;
+        end
+        else
+        begin
+          Mensagem('Erro ao gravar a bomba.');
+          FEstado := erNone;
+        end;
+      AlterarEstadoDosControles;
+    finally
+      FreeAndNil(Persistencia);
+      FreeAndNil(Abastecimento);
+    end;
+  end;
+end;
+
+procedure TfmCadastroAbastecimento.FormActivate(Sender: TObject);
+begin
+  edCodigoAbastecimento.SetFocus;
+  FEstado := erNone;
+  AlterarEstadoDosControles;
+end;
+
+procedure TfmCadastroAbastecimento.FormCreate(Sender: TObject);
+begin
+  Controller := TCadastroAbastecimentoController.Create;
+end;
+
+procedure TfmCadastroAbastecimento.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(Controller);
+end;
+
+procedure TfmCadastroAbastecimento.FormShow(Sender: TObject);
+begin
+  dsBombasAbastecimento.DataSet := Controller.CarregarBombas;
+  lcBombas.ListSource := dsBombasAbastecimento;
+end;
+
+procedure TfmCadastroAbastecimento.LimparCampos;
+begin
+  edCodigoAbastecimento.Clear;
+  lcBombas.KeyValue := Null;
+  edData.Clear;
+  edLitros.Clear;
+  edValor.Clear;
+end;
+
+function TfmCadastroAbastecimento.Validar: Boolean;
+var
+  Data: TDateTime;
+begin
+  Result := True;
+  if (edCodigoAbastecimento.Text = EmptyStr) then
+  begin
+    Mensagem('Código do abastecimento está vazio');
+    edCodigoAbastecimento.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  if (lcBombas.KeyValue = Null) then
+  begin
+    Mensagem('Nenhuma bomba definida');
+    lcBombas.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  if not DataValida(EditData.Text) then
+  begin
+    Mensagem('Entre com uma data válida');
+    edData.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  if edLitros.Text = EmptyStr then
+  begin
+    Mensagem('Entre com uma quantidade de litros válida');
+    edLitros.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+  if edValor.Text = EmptyStr then
+  begin
+    Mensagem('Entre com um valor válido');
+    edValor.SetFocus;
+    Result := False;
+    Exit;
+  end;
+
+end;
+
+end.

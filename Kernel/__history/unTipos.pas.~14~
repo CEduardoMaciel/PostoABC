@@ -1,0 +1,39 @@
+unit unTipos;
+
+interface
+
+uses
+  Dialogs, Controls, SysUtils;
+
+type
+  TEstadosDaRotina = (erNone, erCarregado, erInclusao, erAlteracao);
+
+function Pergunta(const Mensagem: string): Boolean;
+procedure Mensagem(const Mensagem: string);
+function DataValida(const Texto: string): Boolean;
+
+implementation
+
+function Pergunta(const Mensagem: string): Boolean;
+begin
+  Result := MessageDlg(Mensagem, mtConfirmation, [mbYes, mbNo], 0) = mrYes;
+end;
+
+procedure Mensagem(const Mensagem: string);
+begin
+  MessageDlg(Mensagem, mtInformation, [mbOK], 0);
+end;
+
+function DataValida(const Texto: string): Boolean;
+var
+  Data: TDate;
+  FS: TFormatSettings;
+begin
+  FS := TFormatSettings.Create;
+  FS.DateSeparator := '/';
+  FS.ShortDateFormat := 'dd/mm/yyyy';
+
+  Result := TryStrToDate(Texto, Data, FS);
+end;
+
+end.

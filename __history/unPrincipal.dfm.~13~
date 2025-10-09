@@ -1,0 +1,49 @@
+object fmPrincipal: TfmPrincipal
+  Left = 0
+  Top = 0
+  Align = alCustom
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Posto ABC'
+  ClientHeight = 477
+  ClientWidth = 709
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  Menu = MainMenu1
+  OldCreateOrder = False
+  Position = poOwnerFormCenter
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object MainMenu1: TMainMenu
+    Left = 344
+    Top = 216
+    object Cadastros1: TMenuItem
+      Caption = 'Cadastros'
+      object anque1: TMenuItem
+        Caption = 'Tanque'
+        OnClick = IniciarCadastroTanque
+      end
+      object Bomba1: TMenuItem
+        Caption = 'Bomba'
+        OnClick = IniciarCadastroDeBomba
+      end
+    end
+    object Movimentaes1: TMenuItem
+      Caption = 'Movimenta'#231#245'es'
+      object Abastecimento1: TMenuItem
+        Caption = 'Abastecimento'
+      end
+    end
+    object Relatrios1: TMenuItem
+      Caption = 'Relat'#243'rios'
+      object Abastecimento2: TMenuItem
+        Caption = 'Abastecimento'
+      end
+    end
+  end
+end

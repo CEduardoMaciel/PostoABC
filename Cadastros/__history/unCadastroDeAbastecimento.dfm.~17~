@@ -1,0 +1,149 @@
+object fmCadastroAbastecimento: TfmCadastroAbastecimento
+  Left = 0
+  Top = 0
+  BorderStyle = bsDialog
+  Caption = 'Cadastro de Abastecimento'
+  ClientHeight = 165
+  ClientWidth = 401
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  FormStyle = fsMDIForm
+  OldCreateOrder = False
+  Position = poOwnerFormCenter
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 17
+    Top = 40
+    Width = 33
+    Height = 13
+    Caption = 'C'#243'digo'
+  end
+  object Label3: TLabel
+    Left = 85
+    Top = 40
+    Width = 32
+    Height = 13
+    Caption = 'Bomba'
+  end
+  object Label2: TLabel
+    Left = 17
+    Top = 96
+    Width = 26
+    Height = 13
+    Caption = 'Litros'
+  end
+  object Label5: TLabel
+    Left = 160
+    Top = 96
+    Width = 24
+    Height = 13
+    Caption = 'Valor'
+  end
+  object edCodigoAbastecimento: TMaskEdit
+    Left = 16
+    Top = 59
+    Width = 63
+    Height = 21
+    MaxLength = 9
+    TabOrder = 0
+    OnKeyPress = AoPressionarEnterNoCampoCodigo
+  end
+  object btCancelar: TButton
+    Left = 310
+    Top = 113
+    Width = 75
+    Height = 25
+    Caption = 'Cancelar'
+    TabOrder = 4
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 401
+    Height = 34
+    Align = alTop
+    BorderStyle = bsSingle
+    TabOrder = 5
+    ExplicitLeft = -8
+    ExplicitWidth = 387
+    object Label4: TLabel
+      Left = 23
+      Top = 3
+      Width = 158
+      Height = 27
+      Caption = 'Abastecimento'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -24
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object btExcluir: TButton
+      Left = 327
+      Top = 4
+      Width = 58
+      Height = 25
+      Caption = 'Excluir'
+      Enabled = False
+      TabOrder = 0
+    end
+    object btEditar: TButton
+      Left = 263
+      Top = 4
+      Width = 58
+      Height = 25
+      Caption = 'Editar'
+      Enabled = False
+      TabOrder = 1
+    end
+    object btSalvar: TButton
+      Left = 201
+      Top = 4
+      Width = 58
+      Height = 25
+      Caption = '&Salvar'
+      Enabled = False
+      TabOrder = 2
+    end
+  end
+  object lcBombas: TDBLookupComboBox
+    Left = 85
+    Top = 59
+    Width = 300
+    Height = 21
+    KeyField = 'CODIGO_BOMBA'
+    ListField = 'DESCRICAO_BOMBA'
+    ListSource = dsBombasAbastecimento
+    TabOrder = 1
+  end
+  object edLitros: TEdit
+    Left = 17
+    Top = 115
+    Width = 137
+    Height = 21
+    TabOrder = 2
+    OnKeyPress = ApenasNumerais
+  end
+  object edValor: TEdit
+    Left = 160
+    Top = 115
+    Width = 144
+    Height = 21
+    TabOrder = 3
+    OnKeyPress = ApenasNumerais
+  end
+  object dsBombasAbastecimento: TDataSource
+    Left = 264
+    Top = 40
+  end
+end

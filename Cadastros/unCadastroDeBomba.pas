@@ -19,7 +19,7 @@ type
     Label4: TLabel;
     btExcluir: TButton;
     btEditar: TButton;
-    btSalvar: TButton;
+    btSalvar: TButton;                                                       
     dsTanquesBomba: TDataSource;
     lcTanques: TDBLookupComboBox;
     procedure FormCreate(Sender: TObject);

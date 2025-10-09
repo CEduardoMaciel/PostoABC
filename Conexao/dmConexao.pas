@@ -8,24 +8,6 @@ uses
 type
   TConexao = class(TDataModule)
     FirebirdConnection: TSQLConnection;
-    sqBomba: TSQLQuery;
-    dspBomba: TDataSetProvider;
-    sqTanque: TSQLQuery;
-    dspTanque: TDataSetProvider;
-    sqAbastecimento: TSQLQuery;
-    dspAbastecimento: TDataSetProvider;
-    sqBombaCODIGO_BOMBA: TIntegerField;
-    sqBombaDESCRICAO_BOMBA: TStringField;
-    sqBombaCODIGO_TANQUE: TIntegerField;
-    sqTanqueCODIGO_TANQUE: TIntegerField;
-    sqTanqueDESCRICAO: TStringField;
-    sqTanqueTIPO_COMBUSTIVEL: TStringField;
-    sqAbastecimentoCODIGO_ABASTECIMENTO: TIntegerField;
-    sqAbastecimentoDATA_ABASTECIMENTO: TDateField;
-    sqAbastecimentoCODIGO_BOMBA: TIntegerField;
-    sqAbastecimentoLITROS: TFMTBCDField;
-    sqAbastecimentoVALOR_TOTAL: TFMTBCDField;
-    sqAbastecimentoIMPOSTO: TFMTBCDField;
     sqTanquesBomba: TSQLQuery;
     IntegerField1: TIntegerField;
     StringField1: TStringField;
@@ -35,6 +17,13 @@ type
     cdsTanquesBombaDESCRICAO: TStringField;
     sqAuxiliar: TSQLQuery;
     dspAuxiliar: TDataSetProvider;
+    sqBombasAbastecimento: TSQLQuery;
+    IntegerField2: TIntegerField;
+    StringField2: TStringField;
+    dspBombasAbastecimento: TDataSetProvider;
+    cdsBombasAbastecimento: TClientDataSet;
+    cdsBombasAbastecimentoCODIGO_BOMBA: TIntegerField;
+    cdsBombasAbastecimentoDESCRICAO_BOMBA: TStringField;
   private
     { Private declarations }
   public

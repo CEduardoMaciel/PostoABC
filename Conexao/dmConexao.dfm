@@ -1,7 +1,7 @@
 object Conexao: TConexao
   OldCreateOrder = False
-  Height = 371
-  Width = 320
+  Height = 291
+  Width = 366
   object FirebirdConnection: TSQLConnection
     DriverName = 'Interbase'
     GetDriverFunc = 'getSQLDriverINTERBASE'
@@ -41,105 +41,6 @@ object Conexao: TConexao
     Left = 40
     Top = 56
   end
-  object sqBomba: TSQLQuery
-    MaxBlobSize = -1
-    Params = <>
-    SQL.Strings = (
-      'SELECT * FROM BOMBA WHERE 1 = 0')
-    SQLConnection = FirebirdConnection
-    Left = 24
-    Top = 136
-    object sqBombaCODIGO_BOMBA: TIntegerField
-      FieldName = 'CODIGO_BOMBA'
-      Required = True
-    end
-    object sqBombaDESCRICAO_BOMBA: TStringField
-      FieldName = 'DESCRICAO_BOMBA'
-      Required = True
-      Size = 50
-    end
-    object sqBombaCODIGO_TANQUE: TIntegerField
-      FieldName = 'CODIGO_TANQUE'
-      Required = True
-    end
-  end
-  object dspBomba: TDataSetProvider
-    DataSet = sqBomba
-    Left = 24
-    Top = 184
-  end
-  object sqTanque: TSQLQuery
-    MaxBlobSize = -1
-    Params = <>
-    SQL.Strings = (
-      'SELECT * FROM TANQUE WHERE 1 = 0')
-    SQLConnection = FirebirdConnection
-    Left = 88
-    Top = 136
-    object sqTanqueCODIGO_TANQUE: TIntegerField
-      FieldName = 'CODIGO_TANQUE'
-      Required = True
-    end
-    object sqTanqueDESCRICAO: TStringField
-      FieldName = 'DESCRICAO'
-      Required = True
-      Size = 50
-    end
-    object sqTanqueTIPO_COMBUSTIVEL: TStringField
-      FieldName = 'TIPO_COMBUSTIVEL'
-      Required = True
-      FixedChar = True
-      Size = 1
-    end
-  end
-  object dspTanque: TDataSetProvider
-    DataSet = sqTanque
-    Left = 88
-    Top = 184
-  end
-  object sqAbastecimento: TSQLQuery
-    MaxBlobSize = -1
-    Params = <>
-    SQL.Strings = (
-      'SELECT * FROM ABASTECIMENTO WHERE 1 = 0')
-    SQLConnection = FirebirdConnection
-    Left = 176
-    Top = 136
-    object sqAbastecimentoCODIGO_ABASTECIMENTO: TIntegerField
-      FieldName = 'CODIGO_ABASTECIMENTO'
-      Required = True
-    end
-    object sqAbastecimentoDATA_ABASTECIMENTO: TDateField
-      FieldName = 'DATA_ABASTECIMENTO'
-      Required = True
-    end
-    object sqAbastecimentoCODIGO_BOMBA: TIntegerField
-      FieldName = 'CODIGO_BOMBA'
-      Required = True
-    end
-    object sqAbastecimentoLITROS: TFMTBCDField
-      FieldName = 'LITROS'
-      Required = True
-      Precision = 15
-      Size = 2
-    end
-    object sqAbastecimentoVALOR_TOTAL: TFMTBCDField
-      FieldName = 'VALOR_TOTAL'
-      Required = True
-      Precision = 15
-      Size = 2
-    end
-    object sqAbastecimentoIMPOSTO: TFMTBCDField
-      FieldName = 'IMPOSTO'
-      Precision = 15
-      Size = 4
-    end
-  end
-  object dspAbastecimento: TDataSetProvider
-    DataSet = sqAbastecimento
-    Left = 176
-    Top = 184
-  end
   object sqTanquesBomba: TSQLQuery
     MaxBlobSize = -1
     Params = <>
@@ -148,8 +49,8 @@ object Conexao: TConexao
         'SELECT CODIGO_TANQUE, DESCRICAO FROM TANQUE ORDER BY CODIGO_TANQ' +
         'UE')
     SQLConnection = FirebirdConnection
-    Left = 24
-    Top = 256
+    Left = 32
+    Top = 128
     object IntegerField1: TIntegerField
       FieldName = 'CODIGO_TANQUE'
       Required = True
@@ -162,15 +63,15 @@ object Conexao: TConexao
   end
   object dspTanquesBomba: TDataSetProvider
     DataSet = sqTanquesBomba
-    Left = 24
-    Top = 304
+    Left = 16
+    Top = 176
   end
   object cdsTanquesBomba: TClientDataSet
     Aggregates = <>
     Params = <>
     ProviderName = 'dspTanquesBomba'
-    Left = 104
-    Top = 256
+    Left = 48
+    Top = 152
     object cdsTanquesBombaCODIGO_TANQUE: TIntegerField
       FieldName = 'CODIGO_TANQUE'
       Required = True
@@ -187,12 +88,53 @@ object Conexao: TConexao
     SQL.Strings = (
       'SELECT * FROM ABASTECIMENTO WHERE 1 = 0')
     SQLConnection = FirebirdConnection
-    Left = 216
-    Top = 256
+    Left = 248
+    Top = 56
   end
   object dspAuxiliar: TDataSetProvider
     DataSet = sqAuxiliar
-    Left = 216
-    Top = 304
+    Left = 296
+    Top = 56
+  end
+  object sqBombasAbastecimento: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQL.Strings = (
+      
+        'SELECT CODIGO_BOMBA, DESCRICAO_BOMBA FROM BOMBA ORDER BY CODIGO_' +
+        'BOMBA')
+    SQLConnection = FirebirdConnection
+    Left = 176
+    Top = 136
+    object IntegerField2: TIntegerField
+      FieldName = 'CODIGO_BOMBA'
+      Required = True
+    end
+    object StringField2: TStringField
+      FieldName = 'DESCRICAO_BOMBA'
+      Required = True
+      Size = 50
+    end
+  end
+  object dspBombasAbastecimento: TDataSetProvider
+    DataSet = sqBombasAbastecimento
+    Left = 224
+    Top = 168
+  end
+  object cdsBombasAbastecimento: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspBombasAbastecimento'
+    Left = 264
+    Top = 136
+    object cdsBombasAbastecimentoCODIGO_BOMBA: TIntegerField
+      FieldName = 'CODIGO_BOMBA'
+      Required = True
+    end
+    object cdsBombasAbastecimentoDESCRICAO_BOMBA: TStringField
+      FieldName = 'DESCRICAO_BOMBA'
+      Required = True
+      Size = 50
+    end
   end
 end

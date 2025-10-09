@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Menus, dmConexao;
+  Dialogs, Menus, dmConexao, ExtCtrls, jpeg;
 
 type
   TfmPrincipal = class(TForm)
@@ -16,9 +16,11 @@ type
     Abastecimento1: TMenuItem;
     Relatrios1: TMenuItem;
     Abastecimento2: TMenuItem;
+    Image1: TImage;
     procedure FormCreate(Sender: TObject);
     procedure IniciarCadastroTanque(Sender: TObject);
     procedure IniciarCadastroDeBomba(Sender: TObject);
+    procedure Abastecimento1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -32,7 +34,19 @@ implementation
 
 {$R *.dfm}
 uses
-  unCadastroTanque, unCadastroDeBomba;
+  unCadastroTanque, unCadastroDeBomba, unCadastroDeAbastecimento;
+
+procedure TfmPrincipal.Abastecimento1Click(Sender: TObject);
+var
+  FormAbastecimento: TfmCadastroAbastecimento;
+begin
+  FormAbastecimento := TfmCadastroAbastecimento.Create(Self);
+  try
+    FormAbastecimento.ShowModal;
+  finally
+    FreeAndNil(FormAbastecimento);
+  end;
+end;
 
 procedure TfmPrincipal.FormCreate(Sender: TObject);
 begin

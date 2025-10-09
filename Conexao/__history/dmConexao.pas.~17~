@@ -1,0 +1,51 @@
+unit dmConexao;
+
+interface
+
+uses
+  SysUtils, Classes, WideStrings, FMTBcd, DB, DBClient, Provider, SqlExpr;
+
+type
+  TConexao = class(TDataModule)
+    FirebirdConnection: TSQLConnection;
+    sqBomba: TSQLQuery;
+    dspBomba: TDataSetProvider;
+    sqTanque: TSQLQuery;
+    dspTanque: TDataSetProvider;
+    sqAbastecimento: TSQLQuery;
+    dspAbastecimento: TDataSetProvider;
+    sqBombaCODIGO_BOMBA: TIntegerField;
+    sqBombaDESCRICAO_BOMBA: TStringField;
+    sqBombaCODIGO_TANQUE: TIntegerField;
+    sqTanqueCODIGO_TANQUE: TIntegerField;
+    sqTanqueDESCRICAO: TStringField;
+    sqTanqueTIPO_COMBUSTIVEL: TStringField;
+    sqAbastecimentoCODIGO_ABASTECIMENTO: TIntegerField;
+    sqAbastecimentoDATA_ABASTECIMENTO: TDateField;
+    sqAbastecimentoCODIGO_BOMBA: TIntegerField;
+    sqAbastecimentoLITROS: TFMTBCDField;
+    sqAbastecimentoVALOR_TOTAL: TFMTBCDField;
+    sqAbastecimentoIMPOSTO: TFMTBCDField;
+    sqTanquesBomba: TSQLQuery;
+    IntegerField1: TIntegerField;
+    StringField1: TStringField;
+    dspTanquesBomba: TDataSetProvider;
+    cdsTanquesBomba: TClientDataSet;
+    cdsTanquesBombaCODIGO_TANQUE: TIntegerField;
+    cdsTanquesBombaDESCRICAO: TStringField;
+    sqAuxiliar: TSQLQuery;
+    dspAuxiliar: TDataSetProvider;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Conexao: TConexao;
+
+implementation
+
+{$R *.dfm}
+
+end.

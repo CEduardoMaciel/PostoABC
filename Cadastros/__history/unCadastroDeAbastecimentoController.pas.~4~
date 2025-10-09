@@ -1,0 +1,56 @@
+unit unCadastroDeAbastecimentoController;
+
+interface
+
+uses
+  unEntidadeAbastecimento, SqlExpr, SysUtils, dmConexao, DBCLient;
+
+type
+  TCadastroAbastecimentoController = class
+  public
+    function AbastecimentoExiste(ACodigoAbastecimento: Integer): TBomba;
+    function ExcluirAbastecimento(AAbastecimento: TAbastecimento): Boolean;
+    function CarregarBombas: TClientDataSet;
+  end;
+implementation
+
+{ TCadastroAbastecimentoController }
+
+function TCadastroAbastecimentoController.AbastecimentoExiste(
+  ACodigoAbastecimento: Integer): TBomba;
+var
+  Persistencia: TAbastecimentoPersitencia;
+begin
+  Persistencia := TAbastecimentoPersitencia.Create;
+  try
+    Result := Persistencia.Buscar(ACodigoAbastecimento);
+  finally
+    FreeAndNil(Persistencia);
+  end;
+end;
+
+function TCadastroAbastecimentoController.CarregarBombas: TClientDataSet;
+begin
+  if Conexao.sqBombasAbastecimento.Active then
+    Conexao.sqBombasAbastecimento.Close;
+  Conexao.sqBombasAbastecimento.Open;
+
+  Conexao.cdsBombasAbastecimento.Close;
+  Conexao.cdsBombasAbastecimento.Open;
+  Result := Conexao.cdsBombasAbastecimento;
+end;
+
+function TCadastroAbastecimentoController.ExcluirAbastecimento(
+  AAbastecimento: TAbastecimento): Boolean;
+var
+  Persistencia: TAbastecimentoPersitencia;
+begin
+  Persistencia := TAbastecimentoPersitencia.Create;
+  try
+    Result := Persistencia.Excluir(AAbastecimento);
+  finally
+    FreeAndNil(Persistencia);
+  end;
+end;
+
+end.

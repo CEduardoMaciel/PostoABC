@@ -3,13 +3,14 @@ unit unTipos;
 interface
 
 uses
-  Dialogs, Controls;
+  Dialogs, Controls, SysUtils, Windows;
 
 type
   TEstadosDaRotina = (erNone, erCarregado, erInclusao, erAlteracao);
 
 function Pergunta(const Mensagem: string): Boolean;
 procedure Mensagem(const Mensagem: string);
+function DataValida(const Texto: string): Boolean;
 
 implementation
 
@@ -21,6 +22,18 @@ end;
 procedure Mensagem(const Mensagem: string);
 begin
   MessageDlg(Mensagem, mtInformation, [mbOK], 0);
+end;
+
+function DataValida(const Texto: string): Boolean;
+var
+  Data: TDateTime;
+  FS: TFormatSettings;
+begin
+  GetLocaleFormatSettings(LOCALE_SYSTEM_DEFAULT, FS);
+  FS.DateSeparator := '/';
+  FS.ShortDateFormat := 'dd/mm/yyyy';
+
+  Result := TryStrToDate(Texto, Data);
 end;
 
 end.

@@ -61,7 +61,7 @@ object fmCadastroBomba: TfmCadastroBomba
   end
   object btCancelar: TButton
     Left = 304
-    Top = 116
+    Top = 114
     Width = 75
     Height = 25
     Caption = 'Cancelar'

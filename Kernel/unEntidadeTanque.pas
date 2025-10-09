@@ -3,7 +3,7 @@ unit unEntidadeTanque;
 interface
 
 uses
-  DBXpress, SqlExpr, SysUtils;
+  SqlExpr, SysUtils;
 
 type
   TTanque = class
