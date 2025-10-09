@@ -123,7 +123,7 @@ begin
         'CODIGO_BOMBA = :CODIGO_BOMBA, LITROS = :LITROS, VALOR_TOTAL = :VALOR_TOTAL ' +
         'WHERE CODIGO_ABASTECIMENTO = :CODIGO_ABASTECIMENTO';
       QueryAbastecimento.ParamByName('CODIGO_ABASTECIMENTO').AsInteger := AAbastecimento.Codigo;
-      QueryAbastecimento.ParamByName('DATA_ABASTECIMENTO').AsDateTime := AAbastecimento.Data;
+      QueryAbastecimento.ParamByName('DATA_ABASTECIMENTO').AsDate := AAbastecimento.Data;
       QueryAbastecimento.ParamByName('CODIGO_BOMBA').AsInteger := AAbastecimento.CodigoBomba;
       QueryAbastecimento.ParamByName('LITROS').AsFloat := AAbastecimento.Litros;
       QueryAbastecimento.ParamByName('VALOR_TOTAL').AsFloat := AAbastecimento.Valor;
@@ -155,11 +155,11 @@ begin
     if not QueryAbastecimento.IsEmpty then
     begin
       Abastecimento := TAbastecimento.Create;
-      Abastecimento.Codigo := QueryAbastecimento.ParamByName('CODIGO_ABASTECIMENTO').AsInteger;
-      Abastecimento.Data := QueryAbastecimento.ParamByName('DATA_ABASTECIMENTO').AsDateTime;
-      Abastecimento.CodigoBomba := QueryAbastecimento.ParamByName('CODIGO_BOMBA').AsInteger;
-      Abastecimento.Litros := QueryAbastecimento.ParamByName('LITROS').AsFloat;
-      Abastecimento.Valor := QueryAbastecimento.ParamByName('VALOR_TOTAL').AsFloat;
+      Abastecimento.Codigo := QueryAbastecimento.FieldByName('CODIGO_ABASTECIMENTO').AsInteger;
+      Abastecimento.Data := QueryAbastecimento.FieldByName('DATA_ABASTECIMENTO').AsDate;
+      Abastecimento.CodigoBomba := QueryAbastecimento.FieldByName('CODIGO_BOMBA').AsInteger;
+      Abastecimento.Litros := QueryAbastecimento.FieldByName('LITROS').AsFloat;
+      Abastecimento.Valor := QueryAbastecimento.FieldByName('VALOR_TOTAL').AsFloat;
 
       Result := Abastecimento;
     end;
@@ -200,13 +200,13 @@ begin
     if QueryAbastecimento.IsEmpty then
     begin
       QueryAbastecimento.SQL.Text := 'INSERT INTO ABASTECIMENTO (CODIGO_ABASTECIMENTO, ' +
-        'DATA_ABASTECIMENTO, CODIGO_BOMBA, LITROS, VALOR_TOTAL) ' +
-        ' VALUES (:CODIGO_ABASTECIMENTO, :DATA_ABASTECIMENTO, :CODIGO_BOMBA, :LITROS, :VALOR_TOTAL)';
+        'CODIGO_BOMBA, LITROS, VALOR_TOTAL, DATA_ABASTECIMENTO) ' +
+        ' VALUES (:CODIGO_ABASTECIMENTO, :CODIGO_BOMBA, :LITROS, :VALOR_TOTAL, :DATA_ABASTECIMENTO)';
       QueryAbastecimento.ParamByName('CODIGO_ABASTECIMENTO').AsInteger := AAbastecimento.Codigo;
-      QueryAbastecimento.ParamByName('DATA_ABASTECIMENTO').AsDateTime := AAbastecimento.Data;
       QueryAbastecimento.ParamByName('CODIGO_BOMBA').AsInteger := AAbastecimento.CodigoBomba;
       QueryAbastecimento.ParamByName('LITROS').AsFloat := AAbastecimento.Litros;
       QueryAbastecimento.ParamByName('VALOR_TOTAL').AsFloat := AAbastecimento.Valor;
+      QueryAbastecimento.ParamByName('DATA_ABASTECIMENTO').AsDate := AAbastecimento.Data;
       QueryAbastecimento.ExecSQL;
       Result := True;
     end

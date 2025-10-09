@@ -35,6 +35,7 @@ type
     procedure Salvar(Sender: TObject);
     procedure Editar(Sender: TObject);
     procedure Excluir(Sender: TObject);
+    procedure Cancelar(Sender: TObject);
   private
     { Private declarations }
     FEstado: TEstadosDaRotina;
@@ -61,6 +62,9 @@ begin
   btCancelar.Enabled := FEstado in [erInclusao, erAlteracao];
   btEditar.Enabled := FEstado in [erCarregado];
   btExcluir.Enabled := FEstado in [erCarregado];
+  edData.Enabled := FEstado in [erInclusao, erAlteracao];
+  edLitros.Enabled := FEstado in [erInclusao, erAlteracao];
+  edValor.Enabled := FEstado in [erInclusao, erAlteracao];
   if FEstado in [erNone, erCarregado] then
     edCodigoAbastecimento.SetFocus
   else
@@ -89,7 +93,7 @@ begin
         edValor.Text := FormatFloat('0.00', Abastecimento.Valor);
         Abastecimento.Free;
 
-        if Pergunta('Deseja editar o Abastecimento?') then
+        if Pergunta('Deseja editar o Abastecimento?') then           
           FEstado := erAlteracao
         else
           FEstado := erCarregado;  
@@ -115,6 +119,13 @@ begin
     Key := #0;
 end;
 
+procedure TfmCadastroAbastecimento.Cancelar(Sender: TObject);
+begin
+  FEstado := erNone;
+  AlterarEstadoDosControles;
+  edCodigoAbastecimento.SetFocus;
+end;
+
 procedure TfmCadastroAbastecimento.Editar(Sender: TObject);
 begin
   FEstado := erAlteracao;
@@ -134,7 +145,7 @@ begin
       Abastecimento.Codigo := CodigoAbastecimento;
       if Controller.ExcluirAbastecimento(Abastecimento) then
       begin
-        Mensagem('Bomba excluída com sucesso');
+        Mensagem('Abastecimento excluído com sucesso');
         LimparCampos;
         FEstado := erNone;
         AlterarEstadoDosControles;
@@ -142,7 +153,7 @@ begin
       else
         Mensagem('Erro ao excluir a Bomba');
     finally
-      FreeAndNil(Bomba);
+      FreeAndNil(Abastecimento);
     end;
   end;end;
 
@@ -158,7 +169,7 @@ begin
     try
       Abastecimento.Codigo := StrToIntDef(edCodigoAbastecimento.Text, 0);
       Abastecimento.CodigoBomba := lcBombas.KeyValue;
-      Abastecimento.Data := StrToDateTime(edData.Text);
+      Abastecimento.Data := StrToDate(edData.Text);
       Abastecimento.Litros := StrToFloat(edLitros.Text);
       Abastecimento.Valor := StrToFloat(edValor.Text);
 
@@ -166,19 +177,19 @@ begin
       begin
         if Persistencia.Atualizar(Abastecimento) then
         begin
-          Mensagem('Bomba alterada com sucesso');
+          Mensagem('Abastecimento alterado com sucesso');
           FEstado := erCarregado;
         end;
       end
       else
         if Persistencia.Salvar(Abastecimento) then
         begin
-          Mensagem('Bomba inserida com sucesso!');
+          Mensagem('Abastecimento inserido com sucesso!');
           FEstado := erCarregado;
         end
         else
         begin
-          Mensagem('Erro ao gravar a bomba.');
+          Mensagem('Erro ao gravar o abastecimento');
           FEstado := erNone;
         end;
       AlterarEstadoDosControles;
@@ -222,8 +233,6 @@ begin
 end;
 
 function TfmCadastroAbastecimento.Validar: Boolean;
-var
-  Data: TDateTime;
 begin
   Result := True;
   if (edCodigoAbastecimento.Text = EmptyStr) then
@@ -242,21 +251,13 @@ begin
     Exit;
   end;
 
-  if (edData.Text = '__/__/____') then
+  if not DataValida(edData.Text) then
   begin
     Mensagem('Entre com uma data válida');
     edData.SetFocus;
     Result := False;
     Exit;
-  end
-  else
-    if not TryStrToDate(edData.Text, Data) then
-    begin
-      Mensagem('Entre com uma data válida');
-      edData.SetFocus;
-      Result := False;
-      Exit;
-    end;
+  end;
 
   if edLitros.Text = EmptyStr then
   begin

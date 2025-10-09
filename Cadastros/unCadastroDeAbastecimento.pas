@@ -151,7 +151,7 @@ begin
         AlterarEstadoDosControles;
       end
       else
-        Mensagem('Erro ao excluir a Bomba');
+        Mensagem('Erro ao excluir o Abastecimento');
     finally
       FreeAndNil(Abastecimento);
     end;
@@ -177,19 +177,19 @@ begin
       begin
         if Persistencia.Atualizar(Abastecimento) then
         begin
-          Mensagem('Bomba alterada com sucesso');
+          Mensagem('Abastecimento alterado com sucesso');
           FEstado := erCarregado;
         end;
       end
       else
         if Persistencia.Salvar(Abastecimento) then
         begin
-          Mensagem('Bomba inserida com sucesso!');
+          Mensagem('Abastecimento inserido com sucesso!');
           FEstado := erCarregado;
         end
         else
         begin
-          Mensagem('Erro ao gravar a bomba.');
+          Mensagem('Erro ao gravar o abastecimento');
           FEstado := erNone;
         end;
       AlterarEstadoDosControles;

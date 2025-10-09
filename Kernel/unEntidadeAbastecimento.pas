@@ -155,11 +155,11 @@ begin
     if not QueryAbastecimento.IsEmpty then
     begin
       Abastecimento := TAbastecimento.Create;
-      Abastecimento.Codigo := QueryAbastecimento.ParamByName('CODIGO_ABASTECIMENTO').AsInteger;
-      Abastecimento.Data := QueryAbastecimento.ParamByName('DATA_ABASTECIMENTO').AsDate;
-      Abastecimento.CodigoBomba := QueryAbastecimento.ParamByName('CODIGO_BOMBA').AsInteger;
-      Abastecimento.Litros := QueryAbastecimento.ParamByName('LITROS').AsFloat;
-      Abastecimento.Valor := QueryAbastecimento.ParamByName('VALOR_TOTAL').AsFloat;
+      Abastecimento.Codigo := QueryAbastecimento.FieldByName('CODIGO_ABASTECIMENTO').AsInteger;
+      Abastecimento.Data := QueryAbastecimento.FieldByName('DATA_ABASTECIMENTO').AsDateTime;
+      Abastecimento.CodigoBomba := QueryAbastecimento.FieldByName('CODIGO_BOMBA').AsInteger;
+      Abastecimento.Litros := QueryAbastecimento.FieldByName('LITROS').AsFloat;
+      Abastecimento.Valor := QueryAbastecimento.FieldByName('VALOR_TOTAL').AsFloat;
 
       Result := Abastecimento;
     end;
