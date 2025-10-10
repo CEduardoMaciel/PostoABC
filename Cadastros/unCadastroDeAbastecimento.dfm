@@ -81,8 +81,6 @@ object fmCadastroAbastecimento: TfmCadastroAbastecimento
     Align = alTop
     BorderStyle = bsSingle
     TabOrder = 6
-    ExplicitLeft = -8
-    ExplicitWidth = 387
     object Label4: TLabel
       Left = 23
       Top = 3

@@ -61,7 +61,7 @@ begin
   if FEstado in [erNone, erCarregado] then
     edCodigoBomba.SetFocus
   else
-    if FEstado = erAlteracao then
+    if FEstado in [erInclusao, erAlteracao] then
       edDescricaoBomba.SetFocus;
 end;
 
@@ -87,20 +87,16 @@ begin
         if Pergunta('Deseja editar a Bomba?') then
           FEstado := erAlteracao
         else
-          FEstado := erCarregado;  
-        AlterarEstadoDosControles;  
+          FEstado := erCarregado;
       end
       else
       begin
         if Pergunta('Deseja incluir uma nova Bomba?') then
-        begin
           FEstado := erInclusao;
-          AlterarEstadoDosControles;
-          edDescricaoBomba.SetFocus;
-        end;
       end;
     end;
   end;
+  AlterarEstadoDosControles;
 end;
 
 procedure TfmCadastroBomba.Editar(Sender: TObject);

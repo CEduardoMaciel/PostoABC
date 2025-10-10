@@ -68,7 +68,7 @@ begin
   if FEstado in [erNone, erCarregado] then
     edCodigoAbastecimento.SetFocus
   else
-    if FEstado = erAlteracao then
+    if FEstado in [erInclusao, erAlteracao] then
       lcBombas.SetFocus;
 end;
 
@@ -97,19 +97,15 @@ begin
           FEstado := erAlteracao
         else
           FEstado := erCarregado;  
-        AlterarEstadoDosControles;  
       end
       else
       begin
         if Pergunta('Deseja incluir um novo Abastecimento?') then
-        begin
           FEstado := erInclusao;
-          AlterarEstadoDosControles;
-          lcBombas.SetFocus;
-        end;
       end;
     end;
   end;
+  AlterarEstadoDosControles;
 end;
 
 procedure TfmCadastroAbastecimento.ApenasNumerais(Sender: TObject;

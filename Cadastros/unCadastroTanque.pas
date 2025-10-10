@@ -80,10 +80,7 @@ begin
       else
       begin
         if Pergunta('Deseja incluir um novo Tanque?') then
-        begin
           FEstado := erInclusao;
-          edDescricaoTanque.SetFocus;
-        end;
       end;
     end;
   end;
@@ -156,7 +153,7 @@ begin
   if FEstado in [erNone, erCarregado] then
     edCodigoTanque.SetFocus
   else
-    if FEstado = erAlteracao then
+    if FEstado in [erInclusao, erAlteracao] then
       edDescricaoTanque.SetFocus;
 end;
 
