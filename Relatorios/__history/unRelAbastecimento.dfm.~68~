@@ -25,7 +25,6 @@ object fmRelAbastecimento: TfmRelAbastecimento
     Font.Height = -13
     Font.Name = 'Arial'
     Font.Style = []
-    BeforePrint = rlAbastecimentoBeforePrint
     object RLBand1: TRLBand
       Left = 38
       Top = 38
@@ -64,10 +63,8 @@ object fmRelAbastecimento: TfmRelAbastecimento
       Left = 38
       Top = 65
       Width = 718
-      Height = 144
+      Height = 184
       DataFields = 'DATA_ABASTECIMENTO'
-      AfterPrint = RLGroup1AfterPrint
-      BeforePrint = RLGroup1BeforePrint
       object RLBand5: TRLBand
         Left = 0
         Top = 52
@@ -271,18 +268,16 @@ object fmRelAbastecimento: TfmRelAbastecimento
           BeforePrint = lbValorTotalBeforePrint
         end
         object lbImpostosTotal: TRLLabel
-          Left = 632
+          Left = 629
           Top = 6
           Width = 57
           Height = 16
-          Alignment = taRightJustify
           Caption = 'Impostos'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -13
           Font.Name = 'Arial'
           Font.Style = []
-          Holder = RLLabel13
           ParentFont = False
           BeforePrint = lbImpostosTotalBeforePrint
         end
@@ -290,7 +285,7 @@ object fmRelAbastecimento: TfmRelAbastecimento
     end
     object RLBand7: TRLBand
       Left = 38
-      Top = 209
+      Top = 249
       Width = 718
       Height = 27
       BandType = btColumnFooter
@@ -306,38 +301,6 @@ object fmRelAbastecimento: TfmRelAbastecimento
         Font.Name = 'Arial'
         Font.Style = [fsBold]
         ParentFont = False
-      end
-      object lbValorTotalGeral: TRLLabel
-        Left = 524
-        Top = 6
-        Width = 34
-        Height = 16
-        Alignment = taRightJustify
-        Caption = 'Valor'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Arial'
-        Font.Style = []
-        Holder = RLLabel12
-        ParentFont = False
-        BeforePrint = lbValorTotalGeralBeforePrint
-      end
-      object lbImpostosTotalGeral: TRLLabel
-        Left = 632
-        Top = 6
-        Width = 57
-        Height = 16
-        Alignment = taRightJustify
-        Caption = 'Impostos'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Arial'
-        Font.Style = []
-        Holder = RLLabel13
-        ParentFont = False
-        BeforePrint = lbImpostosTotalGeralBeforePrint
       end
     end
   end

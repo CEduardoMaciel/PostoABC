@@ -51,7 +51,6 @@ type
       var PrintIt: Boolean);
     procedure lbImpostosTotalGeralBeforePrint(Sender: TObject;
       var AText: string; var PrintIt: Boolean);
-    procedure RLGroup1AfterPrint(Sender: TObject);
   private
     FValorTotal,
     FValorTotalGeral,
@@ -118,12 +117,6 @@ procedure TfmRelAbastecimento.rlAbastecimentoBeforePrint(Sender: TObject;
 begin
   FValorTotalGeral := 0;
   FImpostosTotalGeral := 0;
-end;
-
-procedure TfmRelAbastecimento.RLGroup1AfterPrint(Sender: TObject);
-begin
-  FValorTotalGeral := FValorTotalGeral + FValorTotal;
-  FImpostosTotalGeral := FImpostosTotalGeral + FImpostosTotal;
 end;
 
 procedure TfmRelAbastecimento.RLGroup1BeforePrint(Sender: TObject;

@@ -66,7 +66,6 @@ object fmRelAbastecimento: TfmRelAbastecimento
       Width = 718
       Height = 144
       DataFields = 'DATA_ABASTECIMENTO'
-      AfterPrint = RLGroup1AfterPrint
       BeforePrint = RLGroup1BeforePrint
       object RLBand5: TRLBand
         Left = 0

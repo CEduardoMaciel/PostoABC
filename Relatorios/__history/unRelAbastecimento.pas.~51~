@@ -47,11 +47,6 @@ type
       var PrintIt: Boolean);
     procedure RLGroup1BeforePrint(Sender: TObject; var PrintIt: Boolean);
     procedure rlAbastecimentoBeforePrint(Sender: TObject; var PrintIt: Boolean);
-    procedure lbValorTotalGeralBeforePrint(Sender: TObject; var AText: string;
-      var PrintIt: Boolean);
-    procedure lbImpostosTotalGeralBeforePrint(Sender: TObject;
-      var AText: string; var PrintIt: Boolean);
-    procedure RLGroup1AfterPrint(Sender: TObject);
   private
     FValorTotal,
     FValorTotalGeral,
@@ -95,22 +90,10 @@ begin
   AText := FormatFloat(',0.00', FImpostosTotal);
 end;
 
-procedure TfmRelAbastecimento.lbImpostosTotalGeralBeforePrint(Sender: TObject;
-  var AText: string; var PrintIt: Boolean);
-begin
-  AText := FormatFloat(',0.00', FImpostosTotalGeral);
-end;
-
 procedure TfmRelAbastecimento.lbValorTotalBeforePrint(Sender: TObject;
   var AText: string; var PrintIt: Boolean);
 begin
   AText := FormatFloat(',0.00', FValorTotal);
-end;
-
-procedure TfmRelAbastecimento.lbValorTotalGeralBeforePrint(Sender: TObject;
-  var AText: string; var PrintIt: Boolean);
-begin
-   AText := FormatFloat(',0.00', FValorTotalGeral);
 end;
 
 procedure TfmRelAbastecimento.rlAbastecimentoBeforePrint(Sender: TObject;
@@ -120,15 +103,11 @@ begin
   FImpostosTotalGeral := 0;
 end;
 
-procedure TfmRelAbastecimento.RLGroup1AfterPrint(Sender: TObject);
-begin
-  FValorTotalGeral := FValorTotalGeral + FValorTotal;
-  FImpostosTotalGeral := FImpostosTotalGeral + FImpostosTotal;
-end;
-
 procedure TfmRelAbastecimento.RLGroup1BeforePrint(Sender: TObject;
   var PrintIt: Boolean);
 begin
+  FValorTotalGeral := FValorTotalGeral + FValorTotal;
+  FImpostosTotalGeral := FImpostosTotalGeral + FImpostosTotal;
   FValorTotal := 0;
   FImpostosTotal := 0;
 end;

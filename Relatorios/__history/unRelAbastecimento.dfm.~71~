@@ -25,7 +25,6 @@ object fmRelAbastecimento: TfmRelAbastecimento
     Font.Height = -13
     Font.Name = 'Arial'
     Font.Style = []
-    BeforePrint = rlAbastecimentoBeforePrint
     object RLBand1: TRLBand
       Left = 38
       Top = 38
@@ -64,9 +63,8 @@ object fmRelAbastecimento: TfmRelAbastecimento
       Left = 38
       Top = 65
       Width = 718
-      Height = 144
+      Height = 184
       DataFields = 'DATA_ABASTECIMENTO'
-      AfterPrint = RLGroup1AfterPrint
       BeforePrint = RLGroup1BeforePrint
       object RLBand5: TRLBand
         Left = 0
@@ -290,7 +288,7 @@ object fmRelAbastecimento: TfmRelAbastecimento
     end
     object RLBand7: TRLBand
       Left = 38
-      Top = 209
+      Top = 249
       Width = 718
       Height = 27
       BandType = btColumnFooter
@@ -321,7 +319,7 @@ object fmRelAbastecimento: TfmRelAbastecimento
         Font.Style = []
         Holder = RLLabel12
         ParentFont = False
-        BeforePrint = lbValorTotalGeralBeforePrint
+        BeforePrint = lbValorTotalBeforePrint
       end
       object lbImpostosTotalGeral: TRLLabel
         Left = 632
@@ -337,7 +335,7 @@ object fmRelAbastecimento: TfmRelAbastecimento
         Font.Style = []
         Holder = RLLabel13
         ParentFont = False
-        BeforePrint = lbImpostosTotalGeralBeforePrint
+        BeforePrint = lbImpostosTotalBeforePrint
       end
     end
   end
