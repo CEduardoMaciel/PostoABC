@@ -25,5 +25,7 @@
     <Transaction>2025/10/09 17:38:48.396.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Cadastros\unCadastroDeAbastecimento.pas</Transaction>
     <Transaction>2025/10/09 17:38:48.396.dfm,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.dfm=C:\ProjetoFortes\PostoABC\PostoABC\Cadastros\unCadastroDeAbastecimento.dfm</Transaction>
     <Transaction>2025/10/09 18:31:09.372.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Cadastros\unCadastroDeAbastecimentoController.pas</Transaction>
+    <Transaction>2025/10/09 20:37:48.395.pas,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.pas=C:\ProjetoFortes\PostoABC\PostoABC\Relatorios\unRelAbastecimento.pas</Transaction>
+    <Transaction>2025/10/09 20:37:48.395.dfm,C:\ProjetoFortes\PostoABC\PostoABC\Unit1.dfm=C:\ProjetoFortes\PostoABC\PostoABC\Relatorios\unRelAbastecimento.dfm</Transaction>
   </Transactions>
 </BorlandProject>

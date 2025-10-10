@@ -13,7 +13,8 @@ uses
   unCadastroDeBomba in 'Cadastros\unCadastroDeBomba.pas' {fmCadastroBomba},
   unCadastroDeBombaController in 'Cadastros\unCadastroDeBombaController.pas',
   unCadastroDeAbastecimento in 'Cadastros\unCadastroDeAbastecimento.pas' {fmCadastroAbastecimento},
-  unCadastroDeAbastecimentoController in 'Cadastros\unCadastroDeAbastecimentoController.pas';
+  unCadastroDeAbastecimentoController in 'Cadastros\unCadastroDeAbastecimentoController.pas',
+  unRelAbastecimento in 'Relatorios\unRelAbastecimento.pas' {fmRelAbastecimento};
 
 {$R *.res}
 
@@ -22,7 +23,5 @@ begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TConexao, Conexao);
   Application.CreateForm(TfmPrincipal, fmPrincipal);
-  Application.CreateForm(TfmCadastroBomba, fmCadastroBomba);
-  Application.CreateForm(TfmCadastroAbastecimento, fmCadastroAbastecimento);
   Application.Run;
 end.

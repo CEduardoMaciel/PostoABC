@@ -24,6 +24,21 @@ type
     cdsBombasAbastecimento: TClientDataSet;
     cdsBombasAbastecimentoCODIGO_BOMBA: TIntegerField;
     cdsBombasAbastecimentoDESCRICAO_BOMBA: TStringField;
+    sqRelatorio: TSQLQuery;
+    dspRelatorio: TDataSetProvider;
+    cdsRelatorio: TClientDataSet;
+    sqRelatorioCODIGO_ABASTECIMENTO: TIntegerField;
+    sqRelatorioDATA_ABASTECIMENTO: TDateField;
+    sqRelatorioDESCRICAO_TANQUE: TStringField;
+    sqRelatorioDESCRICAO_BOMBA: TStringField;
+    sqRelatorioVALOR_TOTAL: TFMTBCDField;
+    sqRelatorioIMPOSTO: TFMTBCDField;
+    cdsRelatorioCODIGO_ABASTECIMENTO: TIntegerField;
+    cdsRelatorioDATA_ABASTECIMENTO: TDateField;
+    cdsRelatorioDESCRICAO_TANQUE: TStringField;
+    cdsRelatorioDESCRICAO_BOMBA: TStringField;
+    cdsRelatorioVALOR_TOTAL: TFMTBCDField;
+    cdsRelatorioIMPOSTO: TFMTBCDField;
   private
     { Private declarations }
   public

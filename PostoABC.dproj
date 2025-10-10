@@ -50,6 +50,9 @@
     <DCCReference Include="Kernel\unEntidadeBomba.pas" />
     <DCCReference Include="Kernel\unEntidadeTanque.pas" />
     <DCCReference Include="Kernel\unTipos.pas" />
+    <DCCReference Include="Relatorios\unRelAbastecimento.pas">
+      <Form>fmRelAbastecimento</Form>
+    </DCCReference>
     <DCCReference Include="unPrincipal.pas">
       <Form>fmPrincipal</Form>
     </DCCReference>

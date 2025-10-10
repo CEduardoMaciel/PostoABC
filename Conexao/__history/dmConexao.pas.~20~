@@ -1,0 +1,40 @@
+unit dmConexao;
+
+interface
+
+uses
+  SysUtils, Classes, WideStrings, FMTBcd, DB, DBClient, Provider, SqlExpr;
+
+type
+  TConexao = class(TDataModule)
+    FirebirdConnection: TSQLConnection;
+    sqTanquesBomba: TSQLQuery;
+    IntegerField1: TIntegerField;
+    StringField1: TStringField;
+    dspTanquesBomba: TDataSetProvider;
+    cdsTanquesBomba: TClientDataSet;
+    cdsTanquesBombaCODIGO_TANQUE: TIntegerField;
+    cdsTanquesBombaDESCRICAO: TStringField;
+    sqAuxiliar: TSQLQuery;
+    dspAuxiliar: TDataSetProvider;
+    sqBombasAbastecimento: TSQLQuery;
+    IntegerField2: TIntegerField;
+    StringField2: TStringField;
+    dspBombasAbastecimento: TDataSetProvider;
+    cdsBombasAbastecimento: TClientDataSet;
+    cdsBombasAbastecimentoCODIGO_BOMBA: TIntegerField;
+    cdsBombasAbastecimentoDESCRICAO_BOMBA: TStringField;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Conexao: TConexao;
+
+implementation
+
+{$R *.dfm}
+
+end.

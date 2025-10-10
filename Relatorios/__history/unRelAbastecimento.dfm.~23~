@@ -1,0 +1,202 @@
+object fmRelAbastecimento: TfmRelAbastecimento
+  Left = 0
+  Top = 0
+  Caption = 'fmRelAbastecimento'
+  ClientHeight = 538
+  ClientWidth = 778
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  OnShow = ExibirRelatorio
+  PixelsPerInch = 96
+  TextHeight = 13
+  object rlAbastecimento: TRLReport
+    Left = 0
+    Top = 0
+    Width = 794
+    Height = 1123
+    DataSource = dsRelatorio
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -13
+    Font.Name = 'Arial'
+    Font.Style = []
+    object RLBand1: TRLBand
+      Left = 38
+      Top = 38
+      Width = 718
+      Height = 27
+      BandType = btHeader
+      object RLSystemInfo1: TRLSystemInfo
+        Left = 3
+        Top = 0
+        Width = 39
+        Height = 16
+      end
+      object RLSystemInfo2: TRLSystemInfo
+        Left = 676
+        Top = 0
+        Width = 39
+        Height = 16
+        Alignment = taRightJustify
+        Info = itHour
+      end
+      object RLLabel1: TRLLabel
+        Left = 328
+        Top = 0
+        Width = 74
+        Height = 16
+        Caption = 'Posto ABC '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
+    object RLBand2: TRLBand
+      Left = 38
+      Top = 65
+      Width = 718
+      Height = 26
+      BandType = btTitle
+      object RLLabel2: TRLLabel
+        Left = 0
+        Top = 3
+        Width = 91
+        Height = 16
+        Caption = 'Abastecimento'
+      end
+      object RLLabel3: TRLLabel
+        Left = 144
+        Top = 3
+        Width = 31
+        Height = 16
+        Caption = 'Data'
+      end
+      object RLLabel4: TRLLabel
+        Left = 255
+        Top = 3
+        Width = 46
+        Height = 16
+        Caption = 'Tanque'
+      end
+      object RLLabel5: TRLLabel
+        Left = 377
+        Top = 3
+        Width = 45
+        Height = 16
+        Caption = 'Bomba'
+      end
+      object RLLabel6: TRLLabel
+        Left = 520
+        Top = 3
+        Width = 34
+        Height = 16
+        Caption = 'Valor'
+      end
+      object RLLabel7: TRLLabel
+        Left = 632
+        Top = 4
+        Width = 57
+        Height = 16
+        Caption = 'Impostos'
+      end
+    end
+    object RLBand3: TRLBand
+      Left = 38
+      Top = 91
+      Width = 718
+      Height = 32
+      object rldbAbastecimento: TRLDBText
+        Left = 0
+        Top = 6
+        Width = 172
+        Height = 16
+        DataField = 'CODIGO_ABASTECIMENTO'
+        DataSource = dsRelatorio
+        Holder = RLLabel2
+      end
+      object rldbData: TRLDBText
+        Left = 144
+        Top = 6
+        Width = 155
+        Height = 16
+        DataField = 'DATA_ABASTECIMENTO'
+        DataSource = dsRelatorio
+        Holder = RLLabel3
+      end
+      object rldbTanque: TRLDBText
+        Left = 255
+        Top = 6
+        Width = 140
+        Height = 16
+        DataField = 'DESCRICAO_TANQUE'
+        DataSource = dsRelatorio
+        Holder = RLLabel4
+      end
+      object rldbBomba: TRLDBText
+        Left = 377
+        Top = 6
+        Width = 135
+        Height = 16
+        DataField = 'DESCRICAO_BOMBA'
+        DataSource = dsRelatorio
+        Holder = RLLabel5
+      end
+      object rldbValor: TRLDBText
+        Left = 520
+        Top = 6
+        Width = 95
+        Height = 16
+        DataField = 'VALOR_TOTAL'
+        DataSource = dsRelatorio
+        Holder = RLLabel6
+      end
+      object rldbImpostos: TRLDBText
+        Left = 632
+        Top = 6
+        Width = 63
+        Height = 16
+        DataField = 'IMPOSTO'
+        DataSource = dsRelatorio
+        Holder = RLLabel7
+      end
+    end
+    object RLBand4: TRLBand
+      Left = 38
+      Top = 123
+      Width = 718
+      Height = 22
+      BandType = btSummary
+      object RLDBText2: TRLDBText
+        Left = 632
+        Top = 6
+        Width = 63
+        Height = 16
+        DataField = 'IMPOSTO'
+        DataSource = dsRelatorio
+        Holder = RLLabel7
+      end
+      object RLDBResult1: TRLDBResult
+        Left = 520
+        Top = 3
+        Width = 134
+        Height = 16
+        DataField = 'VALOR_TOTAL'
+        DataSource = dsRelatorio
+        Holder = RLLabel6
+        Info = riSum
+      end
+    end
+  end
+  object dsRelatorio: TDataSource
+    Left = 240
+    Top = 232
+  end
+end

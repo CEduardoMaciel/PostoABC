@@ -21,6 +21,7 @@ type
     procedure IniciarCadastroTanque(Sender: TObject);
     procedure IniciarCadastroDeBomba(Sender: TObject);
     procedure Abastecimento1Click(Sender: TObject);
+    procedure Abastecimento2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -34,7 +35,8 @@ implementation
 
 {$R *.dfm}
 uses
-  unCadastroTanque, unCadastroDeBomba, unCadastroDeAbastecimento;
+  unCadastroTanque, unCadastroDeBomba, unCadastroDeAbastecimento,
+  unRelAbastecimento;
 
 procedure TfmPrincipal.Abastecimento1Click(Sender: TObject);
 var
@@ -45,6 +47,18 @@ begin
     FormAbastecimento.ShowModal;
   finally
     FreeAndNil(FormAbastecimento);
+  end;
+end;
+
+procedure TfmPrincipal.Abastecimento2Click(Sender: TObject);
+var
+  FormRelatorio: TfmRelAbastecimento;
+begin
+  FormRelatorio := TfmRelAbastecimento.Create(Self);
+  try
+    FormRelatorio.Show;
+  finally
+    FreeAndNil(FormRelatorio);
   end;
 end;
 

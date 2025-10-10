@@ -10,6 +10,7 @@ type
   public
     function BombaExiste(ACodigoBomba: Integer): TBomba;
     function QuantidadeDeBombasVinculadasAEsseTanqueEhPermitida(ACodigoTanque: Integer): Boolean;
+    function ExisteAbastecimentoVinculadoAEssaBomba(ACodigoBomba: Integer): Boolean;
     function ExcluirBomba(ABomba: TBomba): Boolean;
     function CarregarTanques: TClientDataSet;
   end;
@@ -51,6 +52,19 @@ begin
   finally
     FreeAndNil(Persistencia);
   end;
+end;
+
+function TCadastroBombaController.ExisteAbastecimentoVinculadoAEssaBomba(
+  ACodigoBomba: Integer): Boolean;
+begin
+  if Conexao.sqAuxiliar.Active then
+    Conexao.sqAuxiliar.Close;
+
+  Conexao.sqAuxiliar.SQL.Text := 'SELECT COUNT(*) FROM ABASTECIMENTO WHERE CODIGO_BOMBA = ' +
+    QuotedStr(IntToStr(ACodigoBomba));
+
+  Conexao.sqAuxiliar.Open;
+  Result := Conexao.sqAuxiliar.RecordCount > 0;
 end;
 
 function TCadastroBombaController.QuantidadeDeBombasVinculadasAEsseTanqueEhPermitida(

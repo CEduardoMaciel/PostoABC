@@ -137,4 +137,88 @@ object Conexao: TConexao
       Size = 50
     end
   end
+  object sqRelatorio: TSQLQuery
+    MaxBlobSize = -1
+    Params = <>
+    SQL.Strings = (
+      'SELECT CODIGO_ABASTECIMENTO, DATA_ABASTECIMENTO, '
+      'T.DESCRICAO AS DESCRICAO_TANQUE, DESCRICAO_BOMBA, '
+      'VALOR_TOTAL,  IMPOSTO'
+      'FROM ABASTECIMENTO A INNER JOIN BOMBA B ON '
+      'A.CODIGO_BOMBA = B.CODIGO_BOMBA INNER JOIN '
+      ' TANQUE T ON B.CODIGO_TANQUE  = T.CODIGO_TANQUE ')
+    SQLConnection = FirebirdConnection
+    Left = 64
+    Top = 216
+    object sqRelatorioCODIGO_ABASTECIMENTO: TIntegerField
+      FieldName = 'CODIGO_ABASTECIMENTO'
+      Required = True
+    end
+    object sqRelatorioDATA_ABASTECIMENTO: TDateField
+      FieldName = 'DATA_ABASTECIMENTO'
+      Required = True
+    end
+    object sqRelatorioDESCRICAO_TANQUE: TStringField
+      FieldName = 'DESCRICAO_TANQUE'
+      Required = True
+      Size = 50
+    end
+    object sqRelatorioDESCRICAO_BOMBA: TStringField
+      FieldName = 'DESCRICAO_BOMBA'
+      Required = True
+      Size = 50
+    end
+    object sqRelatorioVALOR_TOTAL: TFMTBCDField
+      FieldName = 'VALOR_TOTAL'
+      Required = True
+      Precision = 15
+      Size = 2
+    end
+    object sqRelatorioIMPOSTO: TFMTBCDField
+      FieldName = 'IMPOSTO'
+      Precision = 15
+      Size = 4
+    end
+  end
+  object dspRelatorio: TDataSetProvider
+    DataSet = sqRelatorio
+    Left = 112
+    Top = 248
+  end
+  object cdsRelatorio: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    ProviderName = 'dspRelatorio'
+    Left = 184
+    Top = 240
+    object cdsRelatorioCODIGO_ABASTECIMENTO: TIntegerField
+      FieldName = 'CODIGO_ABASTECIMENTO'
+      Required = True
+    end
+    object cdsRelatorioDATA_ABASTECIMENTO: TDateField
+      FieldName = 'DATA_ABASTECIMENTO'
+      Required = True
+    end
+    object cdsRelatorioDESCRICAO_TANQUE: TStringField
+      FieldName = 'DESCRICAO_TANQUE'
+      Required = True
+      Size = 50
+    end
+    object cdsRelatorioDESCRICAO_BOMBA: TStringField
+      FieldName = 'DESCRICAO_BOMBA'
+      Required = True
+      Size = 50
+    end
+    object cdsRelatorioVALOR_TOTAL: TFMTBCDField
+      FieldName = 'VALOR_TOTAL'
+      Required = True
+      Precision = 15
+      Size = 2
+    end
+    object cdsRelatorioIMPOSTO: TFMTBCDField
+      FieldName = 'IMPOSTO'
+      Precision = 15
+      Size = 4
+    end
+  end
 end

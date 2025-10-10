@@ -127,19 +127,27 @@ begin
     Bomba := TBomba.Create;
     try
       Bomba.Codigo := CodigoBomba;
-      if Controller.ExcluirBomba(Bomba) then
+      if Controller.ExisteAbastecimentoVinculadoAEssaBomba(CodigoBomba) then
       begin
-        Mensagem('Bomba excluída com sucesso');
-        LimparCampos;
-        FEstado := erNone;
-        AlterarEstadoDosControles;
+        Mensagem('Existe uma ou mais abastecimentos vinculados a essa Bomba');
+        FEstado := erCarregado;
       end
       else
-        Mensagem('Erro ao excluir a Bomba');
+      begin
+        if Controller.ExcluirBomba(Bomba) then
+        begin
+          Mensagem('Bomba excluída com sucesso');
+          LimparCampos;
+          FEstado := erNone;
+        end
+        else
+          Mensagem('Erro ao excluir a Bomba');
+      end;
     finally
       FreeAndNil(Bomba);
     end;
   end;
+  AlterarEstadoDosControles;
 end;
 
 procedure TfmCadastroBomba.Cancelar(Sender: TObject);

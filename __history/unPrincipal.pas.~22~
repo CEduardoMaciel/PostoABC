@@ -1,0 +1,81 @@
+unit unPrincipal;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Menus, dmConexao, ExtCtrls, jpeg;
+
+type
+  TfmPrincipal = class(TForm)
+    MainMenu1: TMainMenu;
+    Cadastros1: TMenuItem;
+    anque1: TMenuItem;
+    Bomba1: TMenuItem;
+    Movimentaes1: TMenuItem;
+    Abastecimento1: TMenuItem;
+    Relatrios1: TMenuItem;
+    Abastecimento2: TMenuItem;
+    Image1: TImage;
+    procedure FormCreate(Sender: TObject);
+    procedure IniciarCadastroTanque(Sender: TObject);
+    procedure IniciarCadastroDeBomba(Sender: TObject);
+    procedure Abastecimento1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmPrincipal: TfmPrincipal;
+
+implementation
+
+{$R *.dfm}
+uses
+  unCadastroTanque, unCadastroDeBomba, unCadastroDeAbastecimento;
+
+procedure TfmPrincipal.Abastecimento1Click(Sender: TObject);
+var
+  FormAbastecimento: TfmCadastroAbastecimento;
+begin
+  FormAbastecimento := TfmCadastroAbastecimento.Create(Self);
+  try
+    FormAbastecimento.ShowModal;
+  finally
+    FreeAndNil(FormAbastecimento);
+  end;
+end;
+
+procedure TfmPrincipal.FormCreate(Sender: TObject);
+begin
+  Conexao := TConexao.Create(Self);
+  Conexao.FirebirdConnection.Connected := True;
+end;
+
+procedure TfmPrincipal.IniciarCadastroDeBomba(Sender: TObject);
+var
+  FormBomba: TfmCadastroBomba;
+begin
+  FormBomba := TfmCadastroBomba.Create(Self);
+  try
+    FormBomba.ShowModal;
+  finally
+    FreeAndNil(FormBomba);
+  end;
+end;
+
+procedure TfmPrincipal.IniciarCadastroTanque(Sender: TObject);
+var
+  FormTanque: TfmCadastroTanque;
+begin
+  FormTanque := TfmCadastroTanque.Create(Self);
+  try
+    FormTanque.ShowModal;
+  finally
+    FreeAndNil(FormTanque);
+  end;
+end;
+
+end.

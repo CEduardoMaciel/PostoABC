@@ -76,8 +76,6 @@ object fmCadastroBomba: TfmCadastroBomba
     Align = alTop
     BorderStyle = bsSingle
     TabOrder = 4
-    ExplicitLeft = -8
-    ExplicitWidth = 387
     object Label4: TLabel
       Left = 66
       Top = 1

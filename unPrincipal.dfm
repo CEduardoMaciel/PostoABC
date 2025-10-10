@@ -249,6 +249,7 @@ object fmPrincipal: TfmPrincipal
       Caption = 'Relat'#243'rios'
       object Abastecimento2: TMenuItem
         Caption = 'Abastecimento'
+        OnClick = Abastecimento2Click
       end
     end
   end
