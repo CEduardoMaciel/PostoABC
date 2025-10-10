@@ -1,0 +1,88 @@
+# ---------------------------------------
+# RAD Studio (Delphi / C++Builder) ignore list
+# ---------------------------------------
+
+# Delphi / RAD Studio build outputs
+*.dcu
+*.dcp
+*.bpl
+*.bpi
+*.map
+*.tds
+*.obj
+*.lib
+*.a
+*.o
+*.exe
+*.dll
+*.ocx
+*.so
+*.apk
+*.ipa
+
+# C++Builder specific
+*.hpp
+*.il?
+*.stat
+*.pch
+
+# Backup / Temp files
+*.~*
+*.bak
+*.tmp
+*.old
+*.dsk
+*.local
+*.identcache
+*.tvsconfig
+*.rsconf
+*.cfg
+*.log
+*.dproj.local
+*.groupproj.local
+
+# IDE-specific folders
+__history/
+__recovery/
+__debug/
+Debug/
+Release/
+Win32/
+Win64/
+iOSDevice/
+iOSSimulator/
+Android/
+OSX32/
+OSX64/
+Linux64/
+x86/
+x64/
+ARM/
+
+# Output / intermediários
+*.class
+*.dSYM/
+*.intermediate/
+*.build/
+
+# Configs de IDEs externas
+.vscode/
+.idea/
+
+# Fortes Report ou outros relatórios
+*.frf
+*.frx
+
+# Lazarus (se estiver no mesmo repo por algum motivo)
+*.lps
+*.lpr~
+*.compiled
+
+# Node.js / outros ambientes (caso use no mesmo repo)
+node_modules/
+dist/
+build/
+
+# Arquivos de lock
+package-lock.json
+yarn.lock
